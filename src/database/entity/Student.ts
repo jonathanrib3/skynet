@@ -6,8 +6,5 @@ import { Column, Entity} from 'typeorm';
 export class Student extends Client {
   @Column()
   isApproved: boolean
-  /*
-  @OneToMany(type => Lesson, studentId => Student)
-  lessons: Lesson[]
-  */
+
 }

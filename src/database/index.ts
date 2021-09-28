@@ -1,33 +1,11 @@
-import { config } from 'dotenv'
-import path from 'path'
-import { SuccessfulMessages } from "../shared/constants/messages/SuccessfulMessages";
-import "reflect-metadata";
-import {createConnection, getRepository} from "typeorm";
+import ConnectionClass from './ConnectionClass'
 
+const connectionClass = new ConnectionClass()
 
-config( {
-  path: path.resolve(__dirname, 'database.env')
-})
-console.log(process.env.POSTGRES_USER)
-createConnection().then(async connection => {
-
-  console.log(SuccessfulMessages.DATABASE_CONNECTION_SUCCESSFUL)
-  /*
-  const pilot = new Pilot();
-
-  pilot.age = 33
-  pilot.address = 'R. Aquidaban, 766'
-  pilot.email = 'gmail@gmail.com'
-  pilot.license = 'seilakkkk'
-  pilot.password = '1235'
-  pilot.registration = 'aaaaaaaaaa'
-  //pilot.userType = userType.PILOT
+connectionClass.connectDefault().then(() => {
+  console.log(connectionClass.hasConnection())
+  console.log(connectionClass.getDefaultConnection())
+  import('../server/server')
   
-  const pilotRepo = getRepository(Pilot)
-  await pilotRepo.save(pilot)
+}).catch(error => console.log(error))  
 
-  console.log('Terminou')
-  */
-  
-
-}).catch(error => console.log(error));

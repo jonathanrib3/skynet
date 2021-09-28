@@ -7,10 +7,10 @@ module.exports = {
    "username": process.env.POSTGRES_USER,
    "password": process.env.POSTGRES_PASSWORD,
    "database": process.env.POSTGRES_DB,
-   "synchronize": true,
+   "synchronize": false,
    "logging": false,
    "entities": [
-      "src/database/entity/**/*.{ts,js}"
+      "src/database/entity/*.{ts,js}"
    ],
    "migrations": [
       "src/database/migration/**/*.{ts,js}"

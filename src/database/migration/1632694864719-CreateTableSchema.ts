@@ -1,7 +1,7 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class ClassRelations1632087303657 implements MigrationInterface {
-    name = 'ClassRelations1632087303657'
+export class CreateTableSchema1632694864719 implements MigrationInterface {
+    name = 'CreateTableSchema1632694864719'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "aircraft" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "model" character varying NOT NULL, "callSign" character varying NOT NULL, "flewHours" double precision NOT NULL, CONSTRAINT "PK_46f8c680e9ff88a752b7834bba4" PRIMARY KEY ("id"))`);
@@ -17,6 +17,7 @@ export class ClassRelations1632087303657 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "class_student_id_student" ADD CONSTRAINT "FK_9060e7bfca53529ee9ce95d904d" FOREIGN KEY ("classId") REFERENCES "class"("id") ON DELETE CASCADE ON UPDATE CASCADE`);
         await queryRunner.query(`ALTER TABLE "class_student_id_student" ADD CONSTRAINT "FK_97c3115ff0570571766c6f4826b" FOREIGN KEY ("studentId") REFERENCES "student"("id") ON DELETE CASCADE ON UPDATE CASCADE`);
     }
+
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE "class_student_id_student" DROP CONSTRAINT "FK_97c3115ff0570571766c6f4826b"`);
