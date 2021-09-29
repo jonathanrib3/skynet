@@ -1,5 +1,5 @@
-import { ReportsList } from '../../shared/models/interfaces/ReportsList';
-import Client from '../../shared/models/Client'
+import { ReportsList } from '../../shared/interfaces/ReportsList';
+import Client from '../../shared/abstract_classes/Client'
 import { Column, Entity } from 'typeorm'
 
 @Entity()

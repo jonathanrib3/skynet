@@ -1,4 +1,4 @@
-import Client from '../../shared/models/Client'
+import Client from '../../shared/abstract_classes/Client'
 import { Column, Entity } from 'typeorm'
 
 @Entity()

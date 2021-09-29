@@ -1,5 +1,5 @@
 import { Aircraft } from './../database/entity/Aircraft';
-import { IAircraft } from './../shared/models/interfaces/IAircraft';
+import { IAircraft } from '../shared/interfaces/IAircraft';
 
 import { getRepository } from 'typeorm';
 

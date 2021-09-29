@@ -1,8 +1,7 @@
-import dotenv from 'dotenv'
+import 'dotenv/config'
 
 import { ConnectionOptions } from "typeorm";
 
-dotenv.config()
 export const connectionPoolConfig: ConnectionOptions = 
   {
     type: 'postgres',
@@ -13,7 +12,7 @@ export const connectionPoolConfig: ConnectionOptions =
     database: process.env.POSTGRES_DB,
     synchronize: true,
     logging: false,
-    migrations: ['./src/database/migration/**/*.{ts,js}'],
+    migrations: [ __dirname + "/migration/*.ts"],
     entities: [ __dirname + "/entity/*.ts"],
   }
 

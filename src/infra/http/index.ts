@@ -1,11 +1,11 @@
-import ConnectionClass from './ConnectionClass'
+import ConnectionClass from '../../database/ConnectionClass'
 
 const connectionClass = new ConnectionClass()
 
 connectionClass.connectDefault().then(() => {
   console.log(connectionClass.hasConnection())
   console.log(connectionClass.getDefaultConnection())
-  import('../server/server')
+  import('./server')
   
 }).catch(error => console.log(error))  
 
