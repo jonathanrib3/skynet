@@ -1,16 +1,16 @@
-import { IPilot } from './../shared/interfaces/IPilot';
-import { Pilot } from './../database/entity/Pilot'
+import { IPilot } from '../shared/interfaces';
+import { Pilot } from '../database/entity'
 import { getRepository } from 'typeorm'
 
-export default class PilotService {
+export class PilotService {
 
   private pilotRepository = getRepository(Pilot)
 
-  async getAllPilots() {
+  async findAllPilots() {
     return await this.pilotRepository.find()
   }
 
-  async getPilotById(id: any) {
+  async findPilotById(id: any) {
     return await this.pilotRepository.findByIds(id)
   }
 

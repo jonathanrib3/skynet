@@ -1,10 +1,10 @@
-import { Aircraft } from './../database/entity/Aircraft';
-import { IAircraft } from '../shared/interfaces/IAircraft';
+import { Aircraft } from '../database/entity';
+import { IAircraft } from '../shared/interfaces';
 
 import { getRepository } from 'typeorm';
 
 
-export default class AircraftService {
+export class AircraftService {
  
   private aircraftRepo = getRepository(Aircraft)
   
@@ -14,7 +14,7 @@ export default class AircraftService {
   }
 
   async findAllAircrafts() {
-    return this.aircraftRepo.find()
+    return await this.aircraftRepo.find()
   }
 
 }

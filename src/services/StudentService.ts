@@ -1,9 +1,9 @@
-import { IStudent } from './../shared/interfaces/IStudent';
+import { IStudent } from '../shared/interfaces';
 import { getRepository } from 'typeorm';
-import { Student } from '../database/entity/Student'
+import { Student } from '../database/entity'
 
 
-export default class StudentService {
+export class StudentService {
 
   private studentRepository = getRepository(Student)
 

@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import AircraftService from '../services/AircraftService'
+import { AircraftService } from '../services'
 
 
-export default class AircraftController {
+export class AircraftController {
 
   private aircraftService: AircraftService
 
@@ -11,14 +11,14 @@ export default class AircraftController {
     
   }
 
-  async createAircraft(req: Request, res: Response) {
+  async create(req: Request, res: Response) {
     const { body } = req
     const createdAircraft = await this.aircraftService.create(body)
     return res.status(200).send(createdAircraft)
   }
 
-  async findAllAircrafts(req: Request,res: Response) {
+  async findAll(req: Request,res: Response) {
     
-   return res.status(200).send(await this.aircraftService.findAllAircrafts())
+    return res.status(200).send(await this.aircraftService.findAllAircrafts())
   }
 }
