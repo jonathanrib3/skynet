@@ -1,4 +1,4 @@
-import Client from '../../shared/models/Client';
+import Client from '../../shared/abstract_classes/Client';
 import { Column, Entity} from 'typeorm';
 
 
@@ -6,8 +6,8 @@ import { Column, Entity} from 'typeorm';
 export class Student extends Client {
   @Column()
   isApproved: boolean
-  /*
-  @OneToMany(type => Lesson, studentId => Student)
-  lessons: Lesson[]
-  */
+  
+  constructor(registration: string, address: string, age: number) {
+    super()
+  }
 }

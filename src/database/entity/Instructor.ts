@@ -1,5 +1,6 @@
-import { ReportsList } from '../../shared/models/interfaces/ReportsList';
-import Client from '../../shared/models/Client'
+import { Class } from 'database/entity/Class';
+import { ReportsList } from '../../shared/interfaces/ReportsList';
+import Client from '../../shared/abstract_classes/Client'
 import { Column, Entity } from 'typeorm'
 
 @Entity()
@@ -11,5 +12,18 @@ export class Instructor extends Client {
   @Column()
   instituteName: string;
   
-  reportsList: ReportsList;
-}
+  constructor(
+    registration: string, address: string, age: number, password: string, 
+    courseName:string, email: string, graduateDate: string, instituteName: string,) {
+    
+      super()
+      this.registration = registration
+      this.address = address
+      this.age = age 
+      this.password = password
+      this.courseName = courseName
+      this.email = email
+      this.graduateDate = graduateDate
+      this.instituteName = instituteName
+  }
+} 

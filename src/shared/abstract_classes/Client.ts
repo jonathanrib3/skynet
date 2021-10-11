@@ -13,9 +13,4 @@ export default abstract class Client {
   password: string; 
   @Column()
   email: string;
-  /*
-  @Column()
-  userType: userType;
-  */
-  
 }

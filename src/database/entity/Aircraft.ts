@@ -11,4 +11,10 @@ export class Aircraft {
   callSign: string
   @Column('float')
   flewHours: number
+
+  constructor(model: string, callSign: string, flewHours: number) {
+    this.model = model
+    this.callSign = callSign
+    this.flewHours = flewHours
+  }
 }

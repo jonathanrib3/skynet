@@ -1,0 +1,5 @@
+export * from './IAircraft'
+export * from './IClass'
+export * from './IInstructor'
+export * from './IPilot'
+export * from './IStudent'

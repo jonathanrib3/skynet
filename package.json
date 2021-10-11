@@ -5,9 +5,9 @@
    "license": "MIT",
    "type": "commonjs",
    "scripts": {
-      "dev": "set NODE_ENV=development && ts-node-dev --files --inspect --ignore-watch node_modules ./src/server/server.ts",
-      "start": "set NODE_ENV=development && ts-node-dev --files --inspect --ignore-watch node_modules src/database/index.ts",
-      "typeorm:cli": "ts-node ./node_modules/typeorm/cli -f ormconfig.js"
+      "dev": "set NODE_ENV=development && ts-node-dev --files --inspect --ignore-watch node_modules ./src/infra/http/index.ts",
+      "start": "set NODE_ENV=development && ts-node-dev --files --inspect --ignore-watch node_modules src/database/db_connection.ts",
+      "typeorm:cli": "ts-node ./node_modules/typeorm/cli -f ormconfig.js" 
    },
    "dependencies": {
       "bcrypt": "^5.0.1",
