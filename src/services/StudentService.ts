@@ -20,6 +20,4 @@ export class StudentService {
     ? null
     : await this.studentRepository.save(newStudent)
   }
-
-  
 } 

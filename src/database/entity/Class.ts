@@ -15,22 +15,22 @@ export class Class {
   @PrimaryGeneratedColumn('uuid')
   id: string
   
-  @ManyToOne(type => Instructor,)
-  @JoinColumn()
-  instructorId: Instructor
-
-  @ManyToMany(type => Student)
+  @ManyToMany(type => Instructor, {cascade: true})
   @JoinTable()
-  studentId: Student
+  instructor: Instructor[]
+
+  @ManyToMany(type => Student, {cascade: true})
+  @JoinTable()
+  student: Student[]
 
   @OneToOne(type => Aircraft)
   @JoinColumn()
-  aircraftId: Aircraft
+  aircraft: Aircraft
 
   @Column()
   description: string
 
-  @Column('time')
+  @Column('float')
   flewHours: number
 
   @Column()

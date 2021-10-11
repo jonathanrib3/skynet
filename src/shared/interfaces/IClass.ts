@@ -2,9 +2,9 @@ import { Student, Instructor, Aircraft } from "../../database/entity";
 
 export interface IClass {
   id: string;
-  instructorId: Instructor;
-  studentId: Student;
-  aircraftId: Aircraft;
+  instructorId: string;
+  studentId: string;
+  aircraftId: string;
   description: string;
   flewHours: number;
   isSolo: boolean;

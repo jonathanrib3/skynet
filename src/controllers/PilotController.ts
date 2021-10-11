@@ -13,12 +13,11 @@ export class PilotController {
   async create(req: Request, res: Response) {
     const { body } = req
     const createdpilot = await this.pilotService.createPilot(body)
-    console.log(createdpilot)
     return res.status(200).send(createdpilot)
   }
 
   async findAll(req: Request,res: Response) {
-   return res.status(200).send(await this.pilotService.findAllPilots())
+    return res.status(200).send(await this.pilotService.findAllPilots())
   }
 
   async findById(req: Request,res: Response) {
