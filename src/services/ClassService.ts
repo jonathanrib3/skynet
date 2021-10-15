@@ -2,6 +2,7 @@ import { Student, Instructor, Aircraft } from '../database/entity';
 import { Class } from '../database/entity';
 import { getRepository } from 'typeorm'
 import { IClass } from '../shared/interfaces';
+import { FORMERR } from 'dns';
 
 export class ClassService {
 
@@ -11,25 +12,34 @@ export class ClassService {
   private aircraftRepository = getRepository(Aircraft)
 
   async findAllClasses() {
-    return await this.classRepository.find({relations: ['aircraft','instructor','student']})
+    return await this.classRepository.find(
+      {relations: ['aircraft','instructor','student']})
   }
 
-  async findClassById(id: any) {
-    return await this.classRepository.findByIds(id)
+  async findClassById(id: string) {
+    
+    return await this.classRepository.find({where: {id: id}, relations: ['aircraft','instructor','student']})
+  }
+
+  async updateClass(updatedData: IClass) {
+    return await this.classRepository.update(updatedData.id, updatedData)
   }
 
   async createClass(newClassData: IClass) {
+    const studentsTest = await this.studentRepository.findByIds(newClassData.studentsIds)
+    console.log(studentsTest)  
+    const instructor = await this.instructorRepository
+      .find({where: {id: newClassData.instructorId }}) 
+
+    const aircraft = await this.aircraftRepository
+      .find({where: {id: newClassData.aircraftId }})
     
-    const student = await this.studentRepository.find({where: {id: newClassData.studentId }})
-    const instructor = await this.instructorRepository.find({where: {id: newClassData.instructorId }}) 
-    const aircraft = await this.aircraftRepository.find({where: {id: newClassData.aircraftId }})
-  
     return (!newClassData) 
     ? null
     : await this.classRepository.save(
         {
           aircraft: aircraft[0],
-          student: student,
+          students: studentsTest,
           instructor: instructor,
           description: newClassData.description,
           endTime: newClassData.endTime,

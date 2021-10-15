@@ -10,13 +10,19 @@ export class InstructorService {
     return await this.instructorRepository.find()
   }
 
-  async findInstructorById(id: any) {
-    return await this.instructorRepository.findByIds(id)
+  async findInstructorById(id: string) {
+  
+    console.log('****************************************',id)
+    return await this.instructorRepository.find({where: {id: id}})
   }
 
   async createInstructor(newInstructor: IInstructor) {
     return (!newInstructor) 
     ? null
     : await this.instructorRepository.save(newInstructor)
+  }
+
+  async updateInstructor(updatedData: IInstructor) {
+    return await this.instructorRepository.update(updatedData.id, updatedData)
   }
 } 

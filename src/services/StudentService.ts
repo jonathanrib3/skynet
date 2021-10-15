@@ -11,13 +11,17 @@ export class StudentService {
     return await this.studentRepository.find()
   }
 
-  async findStudentById(id: any) {
-    return await this.studentRepository.findByIds(id)
+  async findStudentById(id: string) {
+    return await this.studentRepository.find({where: {id:id}})
   }
 
   async createStudent(newStudent: IStudent) {
     return (!newStudent) 
     ? null
     : await this.studentRepository.save(newStudent)
+  }
+
+  async updateStudent(updatedData: IStudent) {
+    return await this.studentRepository.update(updatedData.id, updatedData)
   }
 } 

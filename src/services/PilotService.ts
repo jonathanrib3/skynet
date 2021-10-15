@@ -10,13 +10,17 @@ export class PilotService {
     return await this.pilotRepository.find()
   }
 
-  async findPilotById(id: any) {
-    return await this.pilotRepository.findByIds(id)
+  async findPilotById(id: string) {
+    return await this.pilotRepository.find({where: {id:id}})
   }
 
   async createPilot(newPilot: IPilot) {
     return (!newPilot)
     ? null
     : await this.pilotRepository.save(newPilot)
+  }
+
+  async updatePilot(updatedData: IPilot) {
+    return await this.pilotRepository.update(updatedData.id, updatedData)
   }
 }

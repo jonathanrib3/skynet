@@ -21,6 +21,12 @@ export class InstructorController {
   }
 
   async findById(req: Request,res: Response) {
-    return res.status(200).send(await this.instructorService.findInstructorById(req.params.id))
+    const { params } = req
+    return res.status(200).send(await this.instructorService.findInstructorById(req.params.uuid))
+  }
+
+  async update(req: Request,res: Response) {
+    const { body } = req
+    return res.status(200).send(await this.instructorService.updateInstructor(body))
   }
 }

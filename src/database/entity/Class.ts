@@ -21,7 +21,7 @@ export class Class {
 
   @ManyToMany(type => Student, {cascade: true})
   @JoinTable()
-  student: Student[]
+  students: Student[]
 
   @OneToOne(type => Aircraft)
   @JoinColumn()
