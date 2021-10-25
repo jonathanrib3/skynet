@@ -2,7 +2,7 @@ import { IStudent } from '../../shared/interfaces';
 
 
 export class StudentUtils {
-
+  /*
   formatStudent(student: IStudent) {
     const formattedStudent: IStudent = {
       id: student.id,
@@ -15,7 +15,7 @@ export class StudentUtils {
     }
     return formattedStudent
   }
-
+  */
   isStudentValid(student: IStudent) {
     const {
       address,

@@ -1,4 +1,5 @@
-import { PrimaryGeneratedColumn } from 'typeorm';
+import { Class } from 'database/entity';
+import { JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Column, Entity } from 'typeorm';
 
 @Entity()
@@ -11,6 +12,8 @@ export class Aircraft {
   callSign: string
   @Column('float')
   flewHours: number
+  
+
 
   constructor(model: string, callSign: string, flewHours: number) {
     this.model = model

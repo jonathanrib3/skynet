@@ -1,13 +1,27 @@
-import { Student, Instructor, Aircraft } from "../../database/entity";
+import { Student, Instructor, Aircraft, Pilot } from "../../database/entity";
 
-export interface IClass {
+export interface IClassInputDataModel {
   id: string;
-  instructorId: string;
+  instructorsIds: string[];
   studentsIds: string[];
-  aircraftId: string;
+  aircraftsIds: string[];
+  pilotsIds: string[];
   description: string;
   flewHours: number;
   isSolo: boolean;
-  endTime: string;
-  startTime: string;
+  endDate: string;
+  startDate: string;
+}
+
+export interface IClassOutputDataModel {
+  id: string;
+  instructors: Instructor[];
+  students: Student[];
+  aircrafts: Aircraft[];
+  pilot: Pilot;
+  description: string;
+  flewHours: number;
+  isSolo: boolean;
+  endDate: string;
+  startDate: string;
 }

@@ -26,7 +26,12 @@ export class StudentController {
   }
 
   async update(req: Request,res: Response) {
-    const { body } = req
-    return res.status(200).send(await this.studentService.updateStudent(body))
+    const { params, body } = req
+    return res.status(200).send(await this.studentService.updateStudent(params.uuid,body))
+  }
+
+  async delete(req: Request, res: Response) {
+    const { params } = req
+    return res.status(200).send(await this.studentService.deleteStudent(params.uuid))
   }
 }

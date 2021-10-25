@@ -23,6 +23,7 @@ export class AircraftController {
 
   async findById(req: Request, res: Response) {
     const { params } = req
+    console.log(params)
     return res.status(200).send(await this.aircraftService.findAircraftById(params.uuid))
   }
 

@@ -4,6 +4,8 @@ export default abstract class Client {
   @PrimaryGeneratedColumn("uuid")
   id: string;
   @Column()
+  name: string;
+  @Column()
   registration: string;
   @Column()
   address: string;

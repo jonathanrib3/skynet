@@ -26,7 +26,12 @@ export class ClassController {
   }
 
   async update(req: Request,res: Response) {
-    const { body } = req
-    return res.status(200).send(await this.classService.updateClass(body))
+    const { body, params } = req
+    return res.status(200).send(await this.classService.updateClass(params.uuid,body))
+  }
+
+  async delete(req: Request, res: Response) {
+    const { params } = req
+    return res.status(200).send(await this.classService.deleteClass(params.uuid))
   }
 }

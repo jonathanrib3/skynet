@@ -20,24 +20,23 @@ export class AircraftService {
 
   async findAircraftById(id: string) {
     const aircraftFound = await this.aircraftRepository.find({where: {id:id}})
-    const aircraftObject: IAircraft = this.aircraftUtils.formatAircraft(aircraftFound[0])
-     /*{
-      id: aircraftFound[0].id,
-      callSign: aircraftFound[0].callSign,
-      flewHours: aircraftFound[0].flewHours,
-      model: aircraftFound[0].model 
-    }*/
-    return aircraftObject
+    return aircraftFound
   }
 
   async updateAircraft(id: string, dataToBeUpdated: IAircraft) {
-    const previousData: IAircraft = await this.findAircraftById(id)
+    const previousData: Aircraft[] = await this.findAircraftById(id)
 
     return await this.aircraftRepository.update(id, 
       {
-        callSign: (!dataToBeUpdated.callSign) ? previousData.callSign : dataToBeUpdated.callSign,
-        flewHours: (!dataToBeUpdated.flewHours) ? previousData.flewHours : dataToBeUpdated.flewHours,
-        model: (!dataToBeUpdated.model) ? previousData.model : dataToBeUpdated.model,
+        callSign: (!dataToBeUpdated.callSign) 
+          ? previousData[0].callSign 
+          : dataToBeUpdated.callSign,
+        flewHours: (!dataToBeUpdated.flewHours) 
+          ? previousData[0].flewHours 
+          : dataToBeUpdated.flewHours,
+        model: (!dataToBeUpdated.model) 
+          ? previousData[0].model 
+          : dataToBeUpdated.model,
       }
     )
   }

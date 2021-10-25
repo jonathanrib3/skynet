@@ -6,7 +6,11 @@ import { handle } from '../utils/error'
 import { logger } from '../utils/logger'
 import pinoHttp from 'pino-http'
 import { createHttpTerminator } from 'http-terminator'
-import routes from './routes'
+import { 
+  aircraftRouter, 
+  classRouter, 
+  instructorRouter, 
+  pilotRouter, studentRouter } from './routes'
 
 
 
@@ -19,12 +23,17 @@ async function initServer(){
   app.use(cors())
   app.use(express.json())
   app.use(pinoHttp({ logger }))
-  app.use(routes)
+
+  app.use('/aircraft', aircraftRouter)
+  app.use('/class', classRouter)
+  app.use('/pilot', pilotRouter)
+  app.use('/student', studentRouter)
+  app.use('/instructor', instructorRouter)
 
   const server = app.listen(PORT,() => {
     
     logger.info(
-      `Server running in address http://${ADDRESS}:${PORT} in ${process.env.NODE_ENV} environment`
+      `Server running in address http://${ADDRESS}:${PORT} on ${process.env.NODE_ENV}environment`
     )
   })
 
