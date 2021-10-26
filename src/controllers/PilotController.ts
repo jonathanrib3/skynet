@@ -17,10 +17,25 @@ export class PilotController {
   }
 
   async findAll(req: Request,res: Response) {
-    return res.status(200).send(await this.pilotService.findAllPilots())
+    return res.status(200)
+      .send(await this.pilotService.findAllPilots())
   }
 
   async findById(req: Request,res: Response) {
-    return res.status(200).send(await this.pilotService.findPilotById(req.params.id))
+    const { params } = req
+    return res.status(200)
+      .send(await this.pilotService.findPilotById(params.uuid))
+  }
+
+  async update(req: Request,res: Response) {
+    const { body, params } = req
+    return res.status(200)
+      .send(await this.pilotService.updatePilot(params.uuid,body))
+  }
+
+  async delete(req: Request, res: Response) {
+    const { params } = req
+    return res.status(200)
+      .send(await this.pilotService.deletePilot(params.uuid))
   }
 }

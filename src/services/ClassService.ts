@@ -1,7 +1,8 @@
-import { Student, Instructor, Aircraft } from '../database/entity';
+import { Student, Instructor, Aircraft, Pilot } from '../database/entity';
 import { Class } from '../database/entity';
 import { getRepository } from 'typeorm'
-import { IClass } from '../shared/interfaces';
+import { IClassInputDataModel} from '../shared/interfaces';
+
 
 export class ClassService {
 
@@ -11,32 +12,66 @@ export class ClassService {
   private aircraftRepository = getRepository(Aircraft)
 
   async findAllClasses() {
-    return await this.classRepository.find({relations: ['aircraft','instructor','student']})
+    return await this.classRepository.find(
+      {relations: ['aircrafts','instructors','students']})
   }
 
-  async findClassById(id: any) {
-    return await this.classRepository.findByIds(id)
+  async findClassById(id: string) {
+    return await this.classRepository.find({where: {id: id}, relations: ['aircrafts','instructors','students']})
   }
 
-  async createClass(newClassData: IClass) {
+  async createClass(newClassData: IClassInputDataModel) {
+    const students = await this.studentRepository
+      .findByIds(newClassData.studentsIds)
     
-    const student = await this.studentRepository.find({where: {id: newClassData.studentId }})
-    const instructor = await this.instructorRepository.find({where: {id: newClassData.instructorId }}) 
-    const aircraft = await this.aircraftRepository.find({where: {id: newClassData.aircraftId }})
-  
+    const instructors = await this.instructorRepository
+      .findByIds(newClassData.instructorsIds) 
+
+    const aircrafts = await this.aircraftRepository
+      .findByIds(newClassData.aircraftsIds)
+    
     return (!newClassData) 
-    ? null
-    : await this.classRepository.save(
-        {
-          aircraft: aircraft[0],
-          student: student,
-          instructor: instructor,
-          description: newClassData.description,
-          endTime: newClassData.endTime,
-          flewHours: newClassData.flewHours,
-          isSolo: newClassData.isSolo,
-          startTime: newClassData.startTime
-        }
+      ? null
+      : await this.classRepository.save(
+          {
+            aircrafts: aircrafts,
+            students: students,
+            instructors: instructors,
+            description: newClassData.description,
+            endDate: newClassData.endDate,
+            flewHours: newClassData.flewHours,
+            isSolo: newClassData.isSolo,
+            startDate: newClassData.startDate
+          }
+      )
+  }
+
+  async updateClass(id: string, dataToBeUpdated: IClassInputDataModel) {
+    const previousData: Class[] = await this.findClassById(id)
+
+    return await this.classRepository.update(id, 
+      {
+        description: (!dataToBeUpdated.description) 
+          ? previousData[0].description 
+          : dataToBeUpdated.description,
+        endDate: (!dataToBeUpdated.endDate) 
+          ? previousData[0].endDate 
+          : dataToBeUpdated.endDate,
+        flewHours: (!dataToBeUpdated.flewHours) 
+          ? previousData[0].flewHours 
+          : dataToBeUpdated.flewHours,
+        isSolo: (!dataToBeUpdated.isSolo) 
+          ? previousData[0].isSolo 
+          : dataToBeUpdated.isSolo,
+        startDate: (!dataToBeUpdated.startDate) 
+          ? previousData[0].startDate
+          : dataToBeUpdated.startDate 
+      }
     )
   }
+
+  async deleteClass(id: string) {
+    return await this.classRepository.delete(id)
+  }
+
 } 

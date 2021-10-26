@@ -21,6 +21,17 @@ export class ClassController {
   }
 
   async findById(req: Request,res: Response) {
-    return res.status(200).send(await this.classService.findClassById(req.params.id))
+    const { params } = req
+    return res.status(200).send(await this.classService.findClassById(params.uuid))
+  }
+
+  async update(req: Request,res: Response) {
+    const { body, params } = req
+    return res.status(200).send(await this.classService.updateClass(params.uuid,body))
+  }
+
+  async delete(req: Request, res: Response) {
+    const { params } = req
+    return res.status(200).send(await this.classService.deleteClass(params.uuid))
   }
 }

@@ -21,6 +21,17 @@ export class StudentController {
   }
 
   async findById(req: Request,res: Response) {
-    return res.status(200).send(await this.studentService.findStudentById(req.params.id))
+    const { params } = req
+    return res.status(200).send(await this.studentService.findStudentById(params.uuid))
+  }
+
+  async update(req: Request,res: Response) {
+    const { params, body } = req
+    return res.status(200).send(await this.studentService.updateStudent(params.uuid,body))
+  }
+
+  async delete(req: Request, res: Response) {
+    const { params } = req
+    return res.status(200).send(await this.studentService.deleteStudent(params.uuid))
   }
 }

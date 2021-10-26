@@ -1,12 +1,11 @@
-import { Aircraft } from './Aircraft';
-import { Instructor } from './Instructor';
-import { Student } from './Student';
+import { Aircraft, Instructor, Student, Pilot } from './'
 import { 
   Column, 
   Entity, 
   ManyToOne,
   ManyToMany, 
-  JoinTable, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
+  JoinTable, 
+  JoinColumn, OneToOne, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
 
 
 @Entity()
@@ -15,17 +14,21 @@ export class Class {
   @PrimaryGeneratedColumn('uuid')
   id: string
   
-  @ManyToMany(type => Instructor, {cascade: true})
+  @ManyToMany(type => Instructor, {nullable: false, cascade: true, onDelete: 'CASCADE', onUpdate: 'CASCADE'})
   @JoinTable()
-  instructor: Instructor[]
+  instructors: Instructor[]
 
-  @ManyToMany(type => Student, {cascade: true})
+  @ManyToMany(type => Student, {nullable: false, cascade: true, onDelete: 'CASCADE', onUpdate: 'CASCADE'})
   @JoinTable()
-  student: Student[]
+  students: Student[]
 
-  @OneToOne(type => Aircraft)
-  @JoinColumn()
-  aircraft: Aircraft
+  @ManyToMany(type => Aircraft, {nullable: false, cascade: true, onDelete: 'CASCADE', onUpdate: 'CASCADE'})
+  @JoinTable()
+  aircrafts: Aircraft[]
+
+  @ManyToMany(type => Pilot, {nullable: false, cascade: true, onDelete: 'CASCADE', onUpdate: 'CASCADE'})
+  @JoinTable()
+  pilot: Pilot[]
 
   @Column()
   description: string
@@ -37,8 +40,8 @@ export class Class {
   isSolo: boolean
 
   @Column('date')
-  endTime: string
+  endDate: string
 
   @Column('date')
-  startTime: string
+  startDate: string
 }
