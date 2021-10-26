@@ -2,13 +2,11 @@ import { Aircraft } from '../database/entity';
 import { IAircraft } from '../shared/interfaces';
 
 import { getRepository } from 'typeorm';
-import { AircraftUtils } from './utils';
 
 
 export class AircraftService {
  
   private aircraftRepository = getRepository(Aircraft)
-  private aircraftUtils = new AircraftUtils()
 
   async createAircraft(newAircraft: IAircraft) {
     return await this.aircraftRepository.save(newAircraft)

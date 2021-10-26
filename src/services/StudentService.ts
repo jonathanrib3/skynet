@@ -1,13 +1,13 @@
+import { ErrorMessages } from '../shared/constants/messages/ErrorMessages';
 import { IStudent } from '../shared/interfaces';
 import { getRepository } from 'typeorm';
 import { Student } from '../database/entity'
-import { StudentUtils } from './utils';
+import ServerError from './utils/ServerError';
 
 
 export class StudentService {
 
   private studentRepository = getRepository(Student)
-  private studentUtils = new StudentUtils
 
   async findAllStudents() {
     return await this.studentRepository.find()
@@ -15,17 +15,27 @@ export class StudentService {
 
   async findStudentById(id: string) {
     const studentFound = await this.studentRepository.find({where: {id:id}})
+    
+    if(studentFound.length === 0) {
+      throw new ServerError(ErrorMessages.STUDENT_NOT_FOUND, 400)
+    }
     return studentFound
   }
 
   async createStudent(newStudent: IStudent) {
-    return (!newStudent) 
-    ? null
-    : await this.studentRepository.save(newStudent)
+    if(!newStudent) {
+      throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
+    }
+    return await this.studentRepository.save(newStudent)
+      .catch(error => console.log(error))
   }
 
   async updateStudent(id: string, dataToBeUpdated: IStudent) {
     const previousData: Student[] = await this.findStudentById(id)
+
+    if(!dataToBeUpdated){
+      throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
+    }
 
     return await this.studentRepository.update(id, 
       {

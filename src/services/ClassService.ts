@@ -10,15 +10,14 @@ export class ClassService {
   private studentRepository = getRepository(Student)
   private instructorRepository = getRepository(Instructor)
   private aircraftRepository = getRepository(Aircraft)
-  private pilotRepository = getRepository(Pilot)
 
   async findAllClasses() {
     return await this.classRepository.find(
-      {relations: ['aircrafts','instructors','students', 'pilot']})
+      {relations: ['aircrafts','instructors','students']})
   }
 
   async findClassById(id: string) {
-    return await this.classRepository.find({where: {id: id}, relations: ['aircrafts','instructors','students', 'pilot']})
+    return await this.classRepository.find({where: {id: id}, relations: ['aircrafts','instructors','students']})
   }
 
   async createClass(newClassData: IClassInputDataModel) {
@@ -30,27 +29,21 @@ export class ClassService {
 
     const aircrafts = await this.aircraftRepository
       .findByIds(newClassData.aircraftsIds)
-
-    const pilot = await this.pilotRepository
-      .findByIds(newClassData.pilotsIds)
-
-    console.log(pilot[0])
     
     return (!newClassData) 
-    ? null
-    : await this.classRepository.save(
-        {
-          aircrafts: aircrafts,
-          students: students,
-          instructors: instructors,
-          pilot: pilot,
-          description: newClassData.description,
-          endDate: newClassData.endDate,
-          flewHours: newClassData.flewHours,
-          isSolo: newClassData.isSolo,
-          startDate: newClassData.startDate
-        }
-    )
+      ? null
+      : await this.classRepository.save(
+          {
+            aircrafts: aircrafts,
+            students: students,
+            instructors: instructors,
+            description: newClassData.description,
+            endDate: newClassData.endDate,
+            flewHours: newClassData.flewHours,
+            isSolo: newClassData.isSolo,
+            startDate: newClassData.startDate
+          }
+      )
   }
 
   async updateClass(id: string, dataToBeUpdated: IClassInputDataModel) {

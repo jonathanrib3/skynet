@@ -30,7 +30,6 @@ classRouter.post('/',
       startDate: Joi.string().trim().max(16).required(),
       aircraftsIds: Joi.array().required(),
       instructorsIds: Joi.array().required(),
-      pilotsIds: Joi.array().required(),
       studentsIds: Joi.array().required()
     })
   }), 

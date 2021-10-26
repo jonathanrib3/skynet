@@ -5,7 +5,6 @@ export interface IClassInputDataModel {
   instructorsIds: string[];
   studentsIds: string[];
   aircraftsIds: string[];
-  pilotsIds: string[];
   description: string;
   flewHours: number;
   isSolo: boolean;
@@ -18,7 +17,6 @@ export interface IClassOutputDataModel {
   instructors: Instructor[];
   students: Student[];
   aircrafts: Aircraft[];
-  pilot: Pilot;
   description: string;
   flewHours: number;
   isSolo: boolean;

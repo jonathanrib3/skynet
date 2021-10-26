@@ -5,7 +5,7 @@ import { celebrate, Joi, errors, Segments } from 'celebrate'
 const studentController = new StudentController()
 const studentRouter = Router()
 
-studentRouter.use(errors())
+
 
 studentRouter.get('/', 
   (req: Request, res: Response) => 
@@ -62,5 +62,6 @@ studentRouter.delete('/:uuid',
   (req: Request, res: Response) => 
     studentController.delete(req,res));
 
+studentRouter.use(errors())
 
 export default studentRouter

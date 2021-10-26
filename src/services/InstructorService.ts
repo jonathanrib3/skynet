@@ -1,4 +1,3 @@
-import { InstructorUtils } from './utils/InstructorUtils';
 import { Instructor } from './../database/entity'
 import { getRepository } from 'typeorm'
 import { IInstructor } from '../shared/interfaces'
@@ -6,8 +5,6 @@ import { IInstructor } from '../shared/interfaces'
 export class InstructorService {
 
   private instructorRepository = getRepository(Instructor)
-  private instructorUtils = new InstructorUtils()
-
 
   async findAllInstructors() {
     return await this.instructorRepository.find()
