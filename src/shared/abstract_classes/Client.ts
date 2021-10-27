@@ -1,4 +1,4 @@
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, PrimaryGeneratedColumn } from "typeorm";
 
 export default abstract class Client {
   @PrimaryGeneratedColumn("uuid")
@@ -12,7 +12,7 @@ export default abstract class Client {
   @Column("int2")
   age: number;
   @Column()
-  password: string; 
+  password: string;
   @Column()
   email: string;
 }

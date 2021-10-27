@@ -1,26 +1,28 @@
-import { Router, Request, Response } from 'express';
-import { StudentController } from '../../../controllers';
-import { celebrate, Joi, errors, Segments } from 'celebrate'
+import { Router, Request, Response } from "express";
+import { StudentController } from "../../../controllers";
+import { celebrate, Joi, errors, Segments } from "celebrate";
+import authentication from "../middlewares/authentication";
 
-const studentController = new StudentController()
-const studentRouter = Router()
+const studentController = new StudentController();
+const studentRouter = Router();
 
+studentRouter.get("/", (req: Request, res: Response) =>
+  studentController.findAll(req, res)
+);
 
-
-studentRouter.get('/', 
-  (req: Request, res: Response) => 
-    studentController.findAll(req,res));
-
-studentRouter.get('/:uuid', 
+studentRouter.get(
+  "/:uuid",
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
-      uuid: Joi.string().guid()
-    })
-  }), 
-  (req: Request, res: Response) => 
-    studentController.findById(req,res));
+      uuid: Joi.string().guid(),
+    }),
+  }),
+  (req: Request, res: Response) => studentController.findById(req, res)
+);
 
-studentRouter.post('/', 
+studentRouter.post(
+  "/",
+  authentication,
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       address: Joi.string().trim().min(5).required(),
@@ -29,16 +31,17 @@ studentRouter.post('/',
       isApproved: Joi.boolean().required(),
       name: Joi.string().trim().min(5).required(),
       password: Joi.string().trim().min(6).required(),
-      registration: Joi.string().trim().min(6).required()
-    })
-  }), 
-  (req: Request, res: Response) => 
-    studentController.create(req,res));
+      registration: Joi.string().trim().min(6).required(),
+    }),
+  }),
+  (req: Request, res: Response) => studentController.create(req, res)
+);
 
-studentRouter.patch('/:uuid', 
+studentRouter.patch(
+  "/:uuid",
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
-      uuid: Joi.string().guid()
+      uuid: Joi.string().guid(),
     }),
     [Segments.BODY]: Joi.object().keys({
       address: Joi.string().trim().min(5).optional(),
@@ -47,21 +50,22 @@ studentRouter.patch('/:uuid',
       isApproved: Joi.boolean().optional(),
       name: Joi.string().trim().min(5).optional(),
       password: Joi.string().trim().min(6).optional(),
-      registration: Joi.string().trim().min(6).optional()
-    })
-  }), 
-  (req: Request, res: Response) => 
-    studentController.update(req,res));
+      registration: Joi.string().trim().min(6).optional(),
+    }),
+  }),
+  (req: Request, res: Response) => studentController.update(req, res)
+);
 
-studentRouter.delete('/:uuid', 
+studentRouter.delete(
+  "/:uuid",
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
-      uuid: Joi.string().guid()
-    })
-  }), 
-  (req: Request, res: Response) => 
-    studentController.delete(req,res));
+      uuid: Joi.string().guid(),
+    }),
+  }),
+  (req: Request, res: Response) => studentController.delete(req, res)
+);
 
-studentRouter.use(errors())
+studentRouter.use(errors());
 
-export default studentRouter
+export default studentRouter;

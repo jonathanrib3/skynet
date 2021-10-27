@@ -1,26 +1,30 @@
-import { Router, Request, Response } from 'express';
-import { InstructorController } from '../../../controllers';
-import { celebrate, Joi, errors, Segments } from 'celebrate'
+import { Router, Request, Response } from "express";
+import { InstructorController } from "../../../controllers";
+import { celebrate, Joi, errors, Segments } from "celebrate";
+import authentication from "../middlewares/authentication";
 
-const instructorController = new InstructorController()
-const instructorRouter = Router()
+const instructorController = new InstructorController();
+const instructorRouter = Router();
 
-instructorRouter.use(errors())
+instructorRouter.use(errors());
 
-instructorRouter.get('/', 
-  (req: Request, res: Response) => 
-    instructorController.findAll(req,res));
+instructorRouter.get("/", (req: Request, res: Response) =>
+  instructorController.findAll(req, res)
+);
 
-instructorRouter.get('/:uuid', 
+instructorRouter.get(
+  "/:uuid",
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
-      uuid: Joi.string().guid()
-    })
-  }), 
-  (req: Request, res: Response) => 
-    instructorController.findById(req,res));
+      uuid: Joi.string().guid(),
+    }),
+  }),
+  (req: Request, res: Response) => instructorController.findById(req, res)
+);
 
-instructorRouter.post('/', 
+instructorRouter.post(
+  "/",
+  authentication,
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       address: Joi.string().trim().min(5).required(),
@@ -31,16 +35,17 @@ instructorRouter.post('/',
       instituteName: Joi.string().trim().min(5).required(),
       name: Joi.string().trim().min(5).required(),
       password: Joi.string().trim().min(6).required(),
-      registration: Joi.string().trim().min(6).required()
-    })
-  }), 
-  (req: Request, res: Response) => 
-    instructorController.create(req,res));
-    
-instructorRouter.patch('/:uuid', 
+      registration: Joi.string().trim().min(6).required(),
+    }),
+  }),
+  (req: Request, res: Response) => instructorController.create(req, res)
+);
+
+instructorRouter.patch(
+  "/:uuid",
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
-      uuid: Joi.string().guid()
+      uuid: Joi.string().guid(),
     }),
     [Segments.BODY]: Joi.object().keys({
       address: Joi.string().trim().min(5).optional(),
@@ -51,21 +56,20 @@ instructorRouter.patch('/:uuid',
       instituteName: Joi.string().trim().min(5).optional(),
       name: Joi.string().trim().min(5).optional(),
       password: Joi.string().trim().min(6).optional(),
-      registration: Joi.string().trim().min(6).optional()
-    })
-  }), 
-  (req: Request, res: Response) => 
-    instructorController.update(req,res));
+      registration: Joi.string().trim().min(6).optional(),
+    }),
+  }),
+  (req: Request, res: Response) => instructorController.update(req, res)
+);
 
-instructorRouter.delete('/:uuid', 
+instructorRouter.delete(
+  "/:uuid",
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
-      uuid: Joi.string().guid()
-    })
+      uuid: Joi.string().guid(),
+    }),
   }),
-  (req: Request, res: Response) => 
-    instructorController.delete(req,res));
+  (req: Request, res: Response) => instructorController.delete(req, res)
+);
 
-
-
-export default instructorRouter
+export default instructorRouter;
