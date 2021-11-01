@@ -16,6 +16,6 @@ export default class JwtProvider {
         process.env.JWT_SECRET
       ) as ITokenData<TokenPayload>;
       return decoded;
-    } catch (error) {}
+    } catch (error) {0}
   }
 }

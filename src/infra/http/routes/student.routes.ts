@@ -1,10 +1,11 @@
 import { Router, Request, Response } from "express";
 import { StudentController } from "../../../controllers";
-import { celebrate, Joi, errors, Segments } from "celebrate";
+import { celebrate, Joi, Segments } from "celebrate";
 import authentication from "../middlewares/authentication";
 
 const studentController = new StudentController();
 const studentRouter = Router();
+
 
 studentRouter.get("/", (req: Request, res: Response) =>
   studentController.findAll(req, res)
@@ -39,6 +40,7 @@ studentRouter.post(
 
 studentRouter.patch(
   "/:uuid",
+  authentication,
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       uuid: Joi.string().guid(),
@@ -58,6 +60,7 @@ studentRouter.patch(
 
 studentRouter.delete(
   "/:uuid",
+  authentication,
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       uuid: Joi.string().guid(),
@@ -65,7 +68,5 @@ studentRouter.delete(
   }),
   (req: Request, res: Response) => studentController.delete(req, res)
 );
-
-studentRouter.use(errors());
 
 export default studentRouter;

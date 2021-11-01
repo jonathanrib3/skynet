@@ -1,8 +1,8 @@
-import { ErrorMessages } from '../shared/constants/messages/ErrorMessages';
-import { IStudent } from '../shared/interfaces';
+import { ErrorMessages, IStudent } from '../shared';
 import { getRepository } from 'typeorm';
 import { Student } from '../database/entity'
 import ServerError from './utils/ServerError';
+import { createPatchStudentObject } from './utils';
 
 
 export class StudentService {
@@ -10,61 +10,61 @@ export class StudentService {
   private studentRepository = getRepository(Student)
 
   async findAllStudents() {
-    return await this.studentRepository.find()
+
+    const students = await this.studentRepository
+      .find()
+      .catch(error => console.log(error))
+
+    if(!students) {
+      throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
+    }
+
+    if(students.length === 0) {
+      throw new ServerError(ErrorMessages.EMPTY_STUDENT_TABLE, 400)
+    }
+    return students
   }
 
   async findStudentById(id: string) {
-    const studentFound = await this.studentRepository.find({where: {id:id}})
+
+    const student = await this.studentRepository
+      .find({where: {id: id}})
+      .catch(error => console.log(error))
     
-    if(studentFound.length === 0) {
+    if(!student) {
+      throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
+    }
+
+    if(student.length === 0) {
       throw new ServerError(ErrorMessages.STUDENT_NOT_FOUND, 400)
     }
-    return studentFound
+      
+    return student
   }
 
   async createStudent(newStudent: IStudent) {
+
     if(!newStudent) {
       throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
     }
-    return await this.studentRepository.save(newStudent)
+
+    return await this.studentRepository
+      .save(newStudent)
       .catch(error => console.log(error))
   }
 
   async updateStudent(id: string, dataToBeUpdated: IStudent) {
-    const previousData: Student[] = await this.findStudentById(id)
 
     if(!dataToBeUpdated){
       throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
     }
 
-    return await this.studentRepository.update(id, 
-      {
-        address: (!dataToBeUpdated.address) 
-          ? previousData[0].address 
-          : dataToBeUpdated.address,
-        age: (!dataToBeUpdated.age) 
-          ? previousData[0].age 
-          : dataToBeUpdated.age,
-        email: (!dataToBeUpdated.email) 
-          ? previousData[0].email 
-          : dataToBeUpdated.email,
-        isApproved: (!dataToBeUpdated.isApproved) 
-          ? previousData[0].isApproved 
-          : dataToBeUpdated.isApproved,
-        name: (!dataToBeUpdated.name) 
-          ? previousData[0].name 
-          : dataToBeUpdated.name,
-        password: (!dataToBeUpdated.password) 
-          ? previousData[0].password 
-          : dataToBeUpdated.password,
-        registration: (!dataToBeUpdated.registration) 
-          ? previousData[0].registration 
-          : dataToBeUpdated.registration
-      }
-    )
+    return await this.studentRepository
+      .update(id, await createPatchStudentObject(id, dataToBeUpdated))
   }
 
   async deleteStudent(id: string) {
+
     return await this.studentRepository.delete(id)
   }
 

@@ -5,5 +5,13 @@ export const ErrorMessages = {
   CLASS_NOT_FOUND: `Class couldn't be found`,
   AIRCRAFT_NOT_FOUND: `Aircraft couldn't be found`,
   NULL_OBJECT_ERROR: `Object cannot be nullable`,
-  SERVER_INTERNAL_ERROR: `Something went wrong on the server`
+  SERVER_INTERNAL_ERROR: `Something went wrong on the server`, 
+  EMPTY_AIRCRAFT_TABLE: `Aircraft table is actually empty`,
+  EMPTY_CLASS_TABLE: `Class table is actually empty`,
+  EMPTY_INSTRUCTOR_TABLE: `Instructor table is actually empty`,
+  EMPTY_PILOT_TABLE: `Pilot table is actually empty`,
+  EMPTY_STUDENT_TABLE: `Student table is actually empty`,
+  UNKNOWN_DELETE_ERROR: `Something went wrong on trying to delete that entity`,
+  ID_DELETE_ERROR: `There is no entity with such id`,
+  RELATIONSHIP_ERROR: `There is no entities in this relationship with such ids`,
 }

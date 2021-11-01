@@ -1,8 +1,9 @@
-import { Student, Instructor, Aircraft, Pilot } from '../database/entity';
-import { Class } from '../database/entity';
-import { getRepository } from 'typeorm'
-import { IClassInputDataModel} from '../shared/interfaces';
-
+import { Student, Instructor, Aircraft, Class} from '../database/entity';
+import { getRepository, DeleteResult } from 'typeorm';
+import { ErrorMessages, IClassInputDataModel} from '../shared';
+import { 
+  ServerError, 
+  createPostClassObject, createPatchClassObject } from './utils';
 
 export class ClassService {
 
@@ -12,12 +13,25 @@ export class ClassService {
   private aircraftRepository = getRepository(Aircraft)
 
   async findAllClasses() {
-    return await this.classRepository.find(
-      {relations: ['aircrafts','instructors','students']})
+
+    const classes = await this.classRepository
+      .find({relations: ['aircrafts','instructors','students']})
+
+    if(!classes) {
+      throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
+    }
+
+    if(classes.length === 0) {
+      throw new ServerError(ErrorMessages.EMPTY_CLASS_TABLE, 400)
+    }  
+
+    return classes
   }
 
   async findClassById(id: string) {
-    return await this.classRepository.find({where: {id: id}, relations: ['aircrafts','instructors','students']})
+    
+    return await this.classRepository
+      .find({where: {id: id}, relations: ['aircrafts','instructors','students']})
   }
 
   async createClass(newClassData: IClassInputDataModel) {
@@ -30,48 +44,45 @@ export class ClassService {
     const aircrafts = await this.aircraftRepository
       .findByIds(newClassData.aircraftsIds)
     
-    return (!newClassData) 
-      ? null
-      : await this.classRepository.save(
-          {
-            aircrafts: aircrafts,
-            students: students,
-            instructors: instructors,
-            description: newClassData.description,
-            endDate: newClassData.endDate,
-            flewHours: newClassData.flewHours,
-            isSolo: newClassData.isSolo,
-            startDate: newClassData.startDate
-          }
-      )
+    if(!newClassData) {
+      throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
+    }
+
+    if(students.length === 0 || 
+       instructors.length === 0 || aircrafts.length === 0) {
+        throw new ServerError(ErrorMessages.RELATIONSHIP_ERROR, 400)
+    }
+
+    return await this.classRepository
+      .save(createPostClassObject(
+        students, instructors, aircrafts, newClassData))
+      .catch(error => console.log(error))   
   }
 
   async updateClass(id: string, dataToBeUpdated: IClassInputDataModel) {
-    const previousData: Class[] = await this.findClassById(id)
 
-    return await this.classRepository.update(id, 
-      {
-        description: (!dataToBeUpdated.description) 
-          ? previousData[0].description 
-          : dataToBeUpdated.description,
-        endDate: (!dataToBeUpdated.endDate) 
-          ? previousData[0].endDate 
-          : dataToBeUpdated.endDate,
-        flewHours: (!dataToBeUpdated.flewHours) 
-          ? previousData[0].flewHours 
-          : dataToBeUpdated.flewHours,
-        isSolo: (!dataToBeUpdated.isSolo) 
-          ? previousData[0].isSolo 
-          : dataToBeUpdated.isSolo,
-        startDate: (!dataToBeUpdated.startDate) 
-          ? previousData[0].startDate
-          : dataToBeUpdated.startDate 
-      }
-    )
+    if(!dataToBeUpdated) {
+      throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
+    }
+
+    return await this.classRepository
+      .update(id, await createPatchClassObject(id, dataToBeUpdated))
   }
 
   async deleteClass(id: string) {
-    return await this.classRepository.delete(id)
-  }
 
+    const deleteResult = await this.classRepository
+      .delete(id)
+      .catch(error => console.log(error)) as DeleteResult
+
+    if(!deleteResult) {
+      throw new ServerError(ErrorMessages.UNKNOWN_DELETE_ERROR, 400)
+    }
+
+    if(deleteResult.affected === 0) {
+      throw new ServerError(ErrorMessages.ID_DELETE_ERROR, 400)
+    }
+    
+    return deleteResult
+  }
 } 

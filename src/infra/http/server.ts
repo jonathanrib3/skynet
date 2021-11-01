@@ -2,6 +2,7 @@ import "reflect-metadata";
 import "dotenv/config";
 import express from "express";
 import "express-async-errors";
+import { AircraftController } from '@controllers/';
 import cors from "cors";
 import { handle } from "../utils/error";
 import { logger } from "../utils/logger";
@@ -13,15 +14,19 @@ import {
   instructorRouter,
   pilotRouter,
   studentRouter,
+  sessionsRouter,
 } from "./routes";
 import { errorHandler } from "../utils/serverErrorHandler";
-import sessionRouter from "./routes/sessions.routes";
+import { errors } from "celebrate";
+
+
+const ac = new AircraftController()
 
 const app = express();
 
 async function initServer() {
   const PORT = process.env.PORT;
-  const ADDRESS = process.env.ADDRESS;
+  const ADDRESS = process.env.SERVER_ADDRESS;
 
   app.use(cors());
   app.use(express.json());
@@ -31,7 +36,8 @@ async function initServer() {
   app.use("/pilot", pilotRouter);
   app.use("/student", studentRouter);
   app.use("/instructor", instructorRouter);
-  app.use("/sessions", sessionRouter);
+  app.use("/login", sessionsRouter);
+  app.use(errors())
   app.use(errorHandler);
 
   const server = app.listen(PORT, () => {

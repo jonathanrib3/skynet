@@ -1,12 +1,10 @@
 import { Router, Request, Response } from 'express';
 import { AircraftController } from '../../../controllers';
-import { celebrate, Joi, errors, Segments } from 'celebrate'
+import { celebrate, Joi, Segments } from 'celebrate'
 
 const aircraftController = new AircraftController()
 const aircraftRouter = Router()
 
-
-aircraftRouter.use(errors())
 
 aircraftRouter.get('/',
   (req: Request, res: Response) => 

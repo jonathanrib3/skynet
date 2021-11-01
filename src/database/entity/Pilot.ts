@@ -1,5 +1,4 @@
-import { Class } from 'database/entity';
-import Client from '../../shared/abstract_classes/Client'
+import { Client } from '../../shared'
 import { Column, Entity, ManyToOne } from 'typeorm'
 
 @Entity()

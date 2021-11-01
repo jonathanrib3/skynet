@@ -1,4 +1,4 @@
-import Client from '../../shared/abstract_classes/Client';
+import { Client } from '../../shared';
 import { Column, Entity} from 'typeorm';
 
 
@@ -7,7 +7,4 @@ export class Student extends Client {
   @Column()
   isApproved: boolean
   
-  constructor(registration: string, address: string, age: number) {
-    super()
-  }
 }

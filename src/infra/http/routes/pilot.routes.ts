@@ -1,16 +1,17 @@
 import { Router, Request, Response } from 'express';
 import { PilotController } from '../../../controllers';
-import { celebrate, Joi, errors, Segments } from 'celebrate'
+import { celebrate, Joi, Segments } from 'celebrate'
 
 const pilotController = new PilotController()
 const pilotRouter = Router()
 
-pilotRouter.use(errors())
 
-pilotRouter.get('/', 
+pilotRouter.get(
+  '/', 
   (req: Request, res: Response) => 
     pilotController.findAll(req,res));
-pilotRouter.get('/:uuid', 
+pilotRouter.get(
+  '/:uuid', 
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       uuid: Joi.string().guid()
@@ -19,7 +20,8 @@ pilotRouter.get('/:uuid',
   (req: Request, res: Response) => 
     pilotController.findById(req,res));
 
-pilotRouter.post('/', 
+pilotRouter.post(
+  '/', 
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       address: Joi.string().trim().min(5).required(),
@@ -34,7 +36,8 @@ pilotRouter.post('/',
   (req: Request, res: Response) => 
     pilotController.create(req,res));
 
-pilotRouter.patch('/:uuid', 
+pilotRouter.patch(
+  '/:uuid', 
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       uuid: Joi.string().guid()
@@ -52,7 +55,8 @@ pilotRouter.patch('/:uuid',
   (req: Request, res: Response) => 
     pilotController.update(req,res));
 
-pilotRouter.delete('/:uuid', 
+pilotRouter.delete(
+  '/:uuid', 
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       uuid: Joi.string().guid()

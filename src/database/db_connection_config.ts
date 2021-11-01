@@ -4,7 +4,7 @@ import { ConnectionOptions } from "typeorm";
 
 export const connectionPoolConfig: ConnectionOptions = {
   type: "postgres",
-  host: process.env.ADDRESS,
+  host: process.env.POSTGRES_ADDRESS,
   port: Number(process.env.POSTGRES_PORT),
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,

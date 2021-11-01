@@ -1,56 +1,77 @@
-import { IPilot } from '../shared/interfaces';
+import { ErrorMessages, IPilot } from '../shared';
 import { Pilot } from '../database/entity'
-import { getRepository } from 'typeorm'
+import { DeleteResult, getRepository } from 'typeorm'
+import { createPatchPilotObject, ServerError } from './utils';
+
 
 export class PilotService {
 
   private pilotRepository = getRepository(Pilot)
 
   async findAllPilots() {
-    return await this.pilotRepository.find()
+
+    const pilots = await this.pilotRepository
+      .find()
+      .catch(error => console.log(error))
+
+    if(!pilots) {
+      throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
+    }
+
+    if(pilots.length === 0) {
+      throw new ServerError(ErrorMessages.EMPTY_PILOT_TABLE, 400)
+    }
+    return pilots
   }
 
   async findPilotById(id: string) {
-    return await this.pilotRepository.find({where: {id:id}})
+
+    const pilot = await this.pilotRepository
+      .find({where: {id: id}})
+      .catch(error => console.log(error))
+    
+    if(!pilot) {
+      throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
+    }
+
+    if(pilot.length === 0) {
+      throw new ServerError(ErrorMessages.PILOT_NOT_FOUND, 400)
+    }
+      
+    return pilot
   }
 
   async createPilot(newPilot: IPilot) {
-    return (!newPilot)
-    ? null
-    : await this.pilotRepository.save(newPilot)
+
+    if(!newPilot) {
+      throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
+    }
+
+    return await this.pilotRepository
+      .save(newPilot)
+      .catch(error => console.log(error))
   }
 
   async updatePilot(id: string, dataToBeUpdated: IPilot) {
-    const previousData: Pilot[] = await this.findPilotById(id)
-
-    return await this.pilotRepository.update(id, 
-      {
-        address: (!dataToBeUpdated.address) 
-          ? previousData[0].address 
-          : dataToBeUpdated.address,
-        age: (!dataToBeUpdated.age) 
-          ? previousData[0].age 
-          : dataToBeUpdated.age,
-        email: (!dataToBeUpdated.email) 
-          ? previousData[0].email 
-          : dataToBeUpdated.email,
-        license: (!dataToBeUpdated.license) 
-          ? previousData[0].license 
-          : dataToBeUpdated.license,
-        name: (!dataToBeUpdated.name) 
-          ? previousData[0].name 
-          : dataToBeUpdated.name,
-        password: (!dataToBeUpdated.password) 
-          ? previousData[0].password 
-          : dataToBeUpdated.password,
-        registration: (!dataToBeUpdated.registration) 
-          ? previousData[0].registration 
-          : dataToBeUpdated.registration
-      }
-    )
+    
+    return await this.pilotRepository
+      .update(id, await createPatchPilotObject(id, dataToBeUpdated))
   }
 
   async deletePilot(id: string) {
-    return await this.pilotRepository.delete(id)
+
+    const deleteResult = await this.pilotRepository.delete(id)
+      .catch(error => console.log(error)) as DeleteResult
+
+    if(!deleteResult) {
+      throw new ServerError(ErrorMessages.UNKNOWN_DELETE_ERROR, 400)
+    }
+
+    if(deleteResult.affected === 0) {
+      throw new ServerError(ErrorMessages.ID_DELETE_ERROR, 400)
+    }
+
+    return deleteResult
+
   }
 }

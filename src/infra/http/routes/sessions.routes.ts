@@ -5,6 +5,6 @@ const sessionRouter = Router();
 
 const sessionController = new SessionController();
 
-sessionRouter.post("/login", sessionController.store);
+sessionRouter.post("/", sessionController.store);
 
 export default sessionRouter;

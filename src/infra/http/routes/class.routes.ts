@@ -1,17 +1,19 @@
 import { Router, Request, Response } from 'express'
-import { ClassController } from '../../../controllers'
-import { celebrate, Joi, errors, Segments } from 'celebrate'
+import { ClassController } from '@controllers/'
+import { celebrate, Joi, Segments } from 'celebrate'
+import authentication from '../middlewares/authentication'
 
 const classController = new ClassController()
 const classRouter = Router()
 
-classRouter.use(errors())
 
-classRouter.get('/', 
+classRouter.get(
+  '/', 
   (req: Request, res: Response) => 
     classController.findAll(req,res));
 
-classRouter.get('/:uuid', 
+classRouter.get(
+  '/:uuid', 
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       uuid: Joi.string().guid()
@@ -20,7 +22,9 @@ classRouter.get('/:uuid',
   (req: Request, res: Response) => 
     classController.findById(req,res));
 
-classRouter.post('/', 
+classRouter.post(
+  '/',
+  authentication, 
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       description: Joi.string().trim().min(5).required(),
@@ -36,7 +40,9 @@ classRouter.post('/',
   (req: Request, res: Response) => 
     classController.create(req,res));
 
-classRouter.patch('/:uuid', 
+classRouter.patch(
+  '/:uuid',
+  authentication, 
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       uuid: Joi.string().guid()
