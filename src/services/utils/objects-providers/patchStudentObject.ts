@@ -1,6 +1,7 @@
 import { Student } from "src/database/entity";
-import { IStudent } from "src/shared";
+import { ErrorMessages, IStudent } from "src/shared";
 import { getRepository } from "typeorm";
+import ServerError from "../server-error/ServerError";
 
 const studentRepository = getRepository(Student)
 
@@ -11,6 +12,10 @@ async function createPatchStudentObject(
     const previousData: Student[] = await studentRepository
       .find({where: {id: id}})
       .catch(error => console.log(error)) as Student[]
+
+    if(previousData.length === 0) {
+      throw new ServerError(ErrorMessages.STUDENT_NOT_FOUND, 400)
+    }  
 
     const patchedStudent = 
       {

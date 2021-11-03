@@ -1,6 +1,7 @@
 import { Aircraft } from "src/database/entity";
 import { getRepository } from "typeorm";
-import { IAircraft } from "src/shared";
+import { ErrorMessages, IAircraft } from "src/shared";
+import { ServerError } from "..";
 
 const aircraftRepository = getRepository(Aircraft)
 
@@ -11,6 +12,10 @@ async function createPatchAircraftObject(
       .find({where: {id: id}})
       .catch(error => console.log(error)) as Aircraft[]
 
+    if(previousData.length === 0) {
+      throw new ServerError(ErrorMessages.AIRCRAFT_NOT_FOUND, 400)
+    }
+      
     const patchedAircraft =   
     {
       callSign: (!dataToBeUpdated.callSign) 

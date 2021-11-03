@@ -1,8 +1,7 @@
 import { ErrorMessages } from '../../shared/constants/messages/ErrorMessages';
 import type { ErrorRequestHandler } from 'express'
-import ServerError from '../../services/utils/ServerError'
+import ServerError from '../../services/utils/server-error/ServerError'
 import { CelebrateError} from 'celebrate'
-
 
 export const errorHandler : ErrorRequestHandler = (err, req, res, next) => { 
   if(err instanceof ServerError) {

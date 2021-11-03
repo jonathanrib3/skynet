@@ -1,7 +1,7 @@
 import { ErrorMessages, IPilot } from '../shared';
 import { Pilot } from '../database/entity'
 import { DeleteResult, getRepository } from 'typeorm'
-import { createPatchPilotObject, ServerError } from './utils';
+import { createPatchPilotObject, createPostPilotObject, ServerError } from './utils';
 
 
 export class PilotService {
@@ -48,19 +48,24 @@ export class PilotService {
     }
 
     return await this.pilotRepository
-      .save(newPilot)
+      .save(await createPostPilotObject(newPilot))
       .catch(error => console.log(error))
   }
 
   async updatePilot(id: string, dataToBeUpdated: IPilot) {
     
+    if(!dataToBeUpdated){
+      throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
+    }
+
     return await this.pilotRepository
       .update(id, await createPatchPilotObject(id, dataToBeUpdated))
   }
 
   async deletePilot(id: string) {
 
-    const deleteResult = await this.pilotRepository.delete(id)
+    const deleteResult = await this.pilotRepository
+      .delete(id)
       .catch(error => console.log(error)) as DeleteResult
 
     if(!deleteResult) {

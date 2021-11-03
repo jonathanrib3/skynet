@@ -1,6 +1,7 @@
 import { Pilot } from "src/database/entity";
-import { IPilot } from "src/shared";
+import { ErrorMessages, IPilot } from "src/shared";
 import { getRepository } from "typeorm";
+import ServerError from "../server-error/ServerError";
 
 const pilotRepository = getRepository(Pilot)
 
@@ -11,6 +12,10 @@ async function createPatchPilotObject(
     const previousData: Pilot[] = await pilotRepository
       .find({where: {id: id}})
       .catch(error => console.log(error)) as Pilot[]
+
+    if(previousData.length === 0) {
+      throw new ServerError(ErrorMessages.PILOT_NOT_FOUND, 400)
+    }
 
     const patchedPilot = 
       {

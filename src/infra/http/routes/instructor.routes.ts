@@ -26,7 +26,6 @@ instructorRouter.get(
 
 instructorRouter.post(
   "/",
-  authentication,
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       address: Joi.string().trim().min(5).required(),
@@ -56,7 +55,7 @@ instructorRouter.patch(
       age: Joi.number().greater(18).max(80).optional(),
       courseName: Joi.string().trim().min(5).optional(),
       email: Joi.string().trim().email().optional(),
-      graduateName: Joi.string().trim().max(16).optional(),
+      graduateDate: Joi.string().trim().max(16).optional(),
       instituteName: Joi.string().trim().min(5).optional(),
       name: Joi.string().trim().min(5).optional(),
       password: Joi.string().trim().min(6).optional(),

@@ -3,9 +3,6 @@ import { ErrorMessages, IAircraft } from '../shared';
 import { DeleteResult, getRepository } from 'typeorm';
 import { ServerError, createPatchAircraftObject } from './utils';
 
-
-
-
 export class AircraftService {
  
   private aircraftRepository = getRepository(Aircraft)
@@ -63,12 +60,13 @@ export class AircraftService {
 
     return await this.aircraftRepository
       .update(id, await createPatchAircraftObject(id, dataToBeUpdated))
+      .catch(error => console.log(error))
   }
 
   async deleteAircraft(id: string) {
 
     const deleteResult = await this.aircraftRepository
-    .delete(id)
+      .delete(id)
       .catch(error => console.log(error)) as DeleteResult
 
     if(!deleteResult) {

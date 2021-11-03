@@ -1,7 +1,7 @@
 import { Instructor } from './../database/entity'
 import { DeleteResult, getRepository } from 'typeorm'
 import { ErrorMessages, IInstructor } from '../shared'
-import { createPatchInstructorObject, ServerError } from './utils'
+import { createPatchInstructorObject, createPostInstructorObject, ServerError } from './utils'
 
 export class InstructorService {
 
@@ -46,9 +46,9 @@ export class InstructorService {
     if(!newInstructor) {
       throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
     }
-
+    
     return await this.instructorRepository
-      .save(newInstructor)
+      .save(await createPostInstructorObject(newInstructor))
       .catch(error => console.log(error))
   }
 
@@ -60,11 +60,13 @@ export class InstructorService {
 
     return await this.instructorRepository
       .update(id, await createPatchInstructorObject(id, dataToBeUpdated))
+      .catch(error => console.log(error))
   }
 
   async deleteInstructor(id: string) {
     
-    const deleteResult = await this.instructorRepository.delete(id)
+    const deleteResult = await this.instructorRepository
+      .delete(id)
       .catch(error => console.log(error)) as DeleteResult
 
     if(!deleteResult) {

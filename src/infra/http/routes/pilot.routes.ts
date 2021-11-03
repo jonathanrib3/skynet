@@ -66,6 +66,4 @@ pilotRouter.delete(
     pilotController.delete(req,res));
 
 
-
-
 export default pilotRouter
