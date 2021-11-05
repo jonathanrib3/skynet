@@ -2,12 +2,11 @@ import { Instructor } from "src/database/entity";
 import { ErrorMessages, IInstructor } from "src/shared";
 import { getRepository } from "typeorm";
 import { ServerError } from "..";
+import { hashPassword } from "..";
 
 const instructorRepository = getRepository(Instructor)
 
-async function createPatchInstructorObject(
-  id: string, 
-  dataToBeUpdated: IInstructor) {
+async function createPatchInstructorObject(id: string, dataToBeUpdated: IInstructor) {
 
     const previousData: Instructor[] = await instructorRepository
       .find({where: {id: id}})
@@ -41,7 +40,7 @@ async function createPatchInstructorObject(
         : dataToBeUpdated.name,
       password: (!dataToBeUpdated.password) 
         ? previousData[0].password 
-        : dataToBeUpdated.password,
+        : await hashPassword(dataToBeUpdated.password),
       registration: (!dataToBeUpdated.registration) 
         ? previousData[0].registration 
         : dataToBeUpdated.registration

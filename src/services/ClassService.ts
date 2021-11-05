@@ -1,6 +1,6 @@
 import { Student, Instructor, Aircraft, Class} from '../database/entity';
-import { getRepository, DeleteResult } from 'typeorm';
-import { ErrorMessages, IClassInputDataModel} from '../shared';
+import { getRepository } from 'typeorm';
+import { ErrorMessages, SuccessfulMessages, IClassInputDataModel} from '../shared';
 import { 
   ServerError, 
   createPostClassObject, createPatchClassObject } from './utils';
@@ -54,9 +54,7 @@ export class ClassService {
     }
 
     return await this.classRepository
-      .save(createPostClassObject(
-        students, instructors, aircrafts, newClassData))
-      .catch(error => console.log(error))   
+      .save(await createPostClassObject(students, instructors, aircrafts, newClassData))  
   }
 
   async updateClass(id: string, dataToBeUpdated: IClassInputDataModel) {
@@ -71,9 +69,7 @@ export class ClassService {
 
   async deleteClass(id: string) {
 
-    const deleteResult = await this.classRepository
-      .delete(id)
-      .catch(error => console.log(error)) as DeleteResult
+    const deleteResult = await this.classRepository.delete(id)
 
     if(!deleteResult) {
       throw new ServerError(ErrorMessages.UNKNOWN_DELETE_ERROR, 400)
@@ -83,6 +79,6 @@ export class ClassService {
       throw new ServerError(ErrorMessages.ID_DELETE_ERROR, 400)
     }
     
-    return deleteResult
+    return SuccessfulMessages.CLASS_DELETE_SUCCESSFUL
   }
 } 

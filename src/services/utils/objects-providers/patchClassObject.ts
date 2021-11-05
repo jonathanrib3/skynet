@@ -5,13 +5,9 @@ import { ServerError } from "..";
 
 const classRepository = getRepository(Class)
 
-async function createPatchClassObject(
-  id: string, 
-  dataToBeUpdated: IClassInputDataModel) {
+async function createPatchClassObject(id: string, dataToBeUpdated: IClassInputDataModel) {
     
-    const previousData: Class[] = await classRepository
-      .find({where: {id: id}})
-      .catch(error => console.log(error)) as Class[]
+    const previousData: Class[] = await classRepository.find({where: {id: id}})
     
     if(previousData.length === 0) {
       throw new ServerError(ErrorMessages.CLASS_NOT_FOUND, 400)

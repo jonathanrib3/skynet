@@ -1,17 +1,15 @@
 import { Pilot } from "src/database/entity";
 import { ErrorMessages, IPilot } from "src/shared";
 import { getRepository } from "typeorm";
+import { hashPassword } from "..";
 import ServerError from "../server-error/ServerError";
 
 const pilotRepository = getRepository(Pilot)
 
-async function createPatchPilotObject(
-  id: string, 
-  dataToBeUpdated: IPilot) {
+async function createPatchPilotObject(id: string, dataToBeUpdated: IPilot) {
 
     const previousData: Pilot[] = await pilotRepository
       .find({where: {id: id}})
-      .catch(error => console.log(error)) as Pilot[]
 
     if(previousData.length === 0) {
       throw new ServerError(ErrorMessages.PILOT_NOT_FOUND, 400)
@@ -36,7 +34,7 @@ async function createPatchPilotObject(
           : dataToBeUpdated.name,
         password: (!dataToBeUpdated.password) 
           ? previousData[0].password 
-          : dataToBeUpdated.password,
+          : await hashPassword(dataToBeUpdated.password),
         registration: (!dataToBeUpdated.registration) 
           ? previousData[0].registration 
           : dataToBeUpdated.registration

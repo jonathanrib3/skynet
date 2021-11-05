@@ -1,6 +1,6 @@
-import { ErrorMessages, IPilot } from '../shared';
+import { ErrorMessages, SuccessfulMessages, IPilot } from '../shared';
 import { Pilot } from '../database/entity'
-import { DeleteResult, getRepository } from 'typeorm'
+import { getRepository } from 'typeorm'
 import { createPatchPilotObject, createPostPilotObject, ServerError } from './utils';
 
 
@@ -10,9 +10,7 @@ export class PilotService {
 
   async findAllPilots() {
 
-    const pilots = await this.pilotRepository
-      .find()
-      .catch(error => console.log(error))
+    const pilots = await this.pilotRepository.find()
 
     if(!pilots) {
       throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
@@ -26,9 +24,7 @@ export class PilotService {
 
   async findPilotById(id: string) {
 
-    const pilot = await this.pilotRepository
-      .find({where: {id: id}})
-      .catch(error => console.log(error))
+    const pilot = await this.pilotRepository.find({where: {id: id}})
     
     if(!pilot) {
       throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
@@ -42,14 +38,13 @@ export class PilotService {
   }
 
   async createPilot(newPilot: IPilot) {
-
+    
     if(!newPilot) {
       throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
     }
 
     return await this.pilotRepository
       .save(await createPostPilotObject(newPilot))
-      .catch(error => console.log(error))
   }
 
   async updatePilot(id: string, dataToBeUpdated: IPilot) {
@@ -64,9 +59,7 @@ export class PilotService {
 
   async deletePilot(id: string) {
 
-    const deleteResult = await this.pilotRepository
-      .delete(id)
-      .catch(error => console.log(error)) as DeleteResult
+    const deleteResult = await this.pilotRepository.delete(id)
 
     if(!deleteResult) {
       throw new ServerError(ErrorMessages.UNKNOWN_DELETE_ERROR, 400)
@@ -76,7 +69,7 @@ export class PilotService {
       throw new ServerError(ErrorMessages.ID_DELETE_ERROR, 400)
     }
 
-    return deleteResult
+    return SuccessfulMessages.PILOT_DELETE_SUCCESSFUL
 
   }
 }

@@ -5,12 +5,9 @@ import { ServerError } from "..";
 
 const aircraftRepository = getRepository(Aircraft)
 
-async function createPatchAircraftObject(
-  id: string, dataToBeUpdated: IAircraft) {
+async function createPatchAircraftObject(id: string, dataToBeUpdated: IAircraft) {
   
-    const previousData: Aircraft[] = await aircraftRepository
-      .find({where: {id: id}})
-      .catch(error => console.log(error)) as Aircraft[]
+    const previousData: Aircraft[] = await aircraftRepository.find({where: {id: id}})
 
     if(previousData.length === 0) {
       throw new ServerError(ErrorMessages.AIRCRAFT_NOT_FOUND, 400)

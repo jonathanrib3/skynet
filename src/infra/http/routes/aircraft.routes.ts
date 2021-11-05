@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { AircraftController } from '../../../controllers';
 import { celebrate, Joi, Segments } from 'celebrate'
+import authentication from '../middlewares/authentication';
 
 const aircraftController = new AircraftController()
 const aircraftRouter = Router()
@@ -30,7 +31,8 @@ aircraftRouter.post('/',
   (req: Request, res: Response) => 
     aircraftController.create(req,res));
 
-aircraftRouter.patch('/:uuid', 
+aircraftRouter.patch('/:uuid',
+  authentication,
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       uuid: Joi.string().guid()
@@ -44,7 +46,8 @@ aircraftRouter.patch('/:uuid',
   (req: Request, res: Response) => 
     aircraftController.update(req,res));
 
-aircraftRouter.delete('/:uuid', 
+aircraftRouter.delete('/:uuid',
+  authentication, 
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       uuid: Joi.string().guid()

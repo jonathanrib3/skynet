@@ -1,6 +1,6 @@
 import { Instructor } from './../database/entity'
 import { DeleteResult, getRepository } from 'typeorm'
-import { ErrorMessages, IInstructor } from '../shared'
+import { ErrorMessages, SuccessfulMessages, IInstructor } from '../shared'
 import { createPatchInstructorObject, createPostInstructorObject, ServerError } from './utils'
 
 export class InstructorService {
@@ -9,9 +9,7 @@ export class InstructorService {
 
   async findAllInstructors() {
 
-    const instructors = await this.instructorRepository
-      .find()
-      .catch(error => console.log(error))
+    const instructors = await this.instructorRepository.find()
 
     if(!instructors) {
       throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
@@ -26,9 +24,7 @@ export class InstructorService {
 
   async findInstructorById(id: string) {
 
-    const instructor = await this.instructorRepository
-      .find({where: {id: id}})
-      .catch(error => console.log(error))
+    const instructor = await this.instructorRepository.find({where: {id: id}})
     
     if(!instructor) {
       throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
@@ -49,7 +45,6 @@ export class InstructorService {
     
     return await this.instructorRepository
       .save(await createPostInstructorObject(newInstructor))
-      .catch(error => console.log(error))
   }
 
   async updateInstructor(id: string, dataToBeUpdated: IInstructor) {
@@ -60,14 +55,12 @@ export class InstructorService {
 
     return await this.instructorRepository
       .update(id, await createPatchInstructorObject(id, dataToBeUpdated))
-      .catch(error => console.log(error))
+      
   }
 
   async deleteInstructor(id: string) {
     
-    const deleteResult = await this.instructorRepository
-      .delete(id)
-      .catch(error => console.log(error)) as DeleteResult
+    const deleteResult = await this.instructorRepository.delete(id)
 
     if(!deleteResult) {
       throw new ServerError(ErrorMessages.UNKNOWN_DELETE_ERROR, 400)
@@ -77,6 +70,6 @@ export class InstructorService {
       throw new ServerError(ErrorMessages.ID_DELETE_ERROR, 400)
     }
 
-    return deleteResult
+    return SuccessfulMessages.INSTRUCTOR_DELETE_SUCCESSFUL
   }
 } 

@@ -4,9 +4,7 @@ import findInstructorToLogin from "./findInstructorToLogin";
 import findPilotToLogin from "./findPilotToLogin";
 import findStudentToLogin from "./findStudentToLogin";
 
-async function findUser(
-  type: 'instructor' | 'student' | 'pilot', 
-  email: string) {
+async function findUser(type: 'instructor' | 'student' | 'pilot', email: string) {
 
     switch(type) {
       case 'instructor':

@@ -19,7 +19,7 @@ export default class LoginService {
     if(bcrypt.compareSync(password, user[0].password)) {
       const token = this.jwtProvider.sign<UserToken>({
         data: {
-          id: 1,
+          id: user[0].id,
           type,
         },
       });

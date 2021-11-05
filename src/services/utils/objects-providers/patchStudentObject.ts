@@ -1,17 +1,14 @@
 import { Student } from "src/database/entity";
 import { ErrorMessages, IStudent } from "src/shared";
 import { getRepository } from "typeorm";
+import { hashPassword } from "..";
 import ServerError from "../server-error/ServerError";
 
 const studentRepository = getRepository(Student)
 
-async function createPatchStudentObject(
-  id: string, 
-  dataToBeUpdated: IStudent) {
+async function createPatchStudentObject(id: string, dataToBeUpdated: IStudent) {
 
-    const previousData: Student[] = await studentRepository
-      .find({where: {id: id}})
-      .catch(error => console.log(error)) as Student[]
+    const previousData: Student[] = await studentRepository.find({where: {id: id}})
 
     if(previousData.length === 0) {
       throw new ServerError(ErrorMessages.STUDENT_NOT_FOUND, 400)
@@ -36,7 +33,7 @@ async function createPatchStudentObject(
             : dataToBeUpdated.name,
           password: (!dataToBeUpdated.password) 
             ? previousData[0].password 
-            : dataToBeUpdated.password,
+            : await hashPassword(dataToBeUpdated.password),
           registration: (!dataToBeUpdated.registration) 
             ? previousData[0].registration 
             : dataToBeUpdated.registration
