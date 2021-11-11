@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { PilotController } from '../../../controllers';
 import { celebrate, Joi, Segments } from 'celebrate'
+import authentication from '../middlewares/authentication';
 
 const pilotController = new PilotController()
 const pilotRouter = Router()
@@ -37,7 +38,8 @@ pilotRouter.post(
     pilotController.create(req,res));
 
 pilotRouter.patch(
-  '/:uuid', 
+  '/:uuid',
+  authentication, 
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       uuid: Joi.string().guid()
@@ -56,7 +58,8 @@ pilotRouter.patch(
     pilotController.update(req,res));
 
 pilotRouter.delete(
-  '/:uuid', 
+  '/:uuid',
+  authentication, 
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       uuid: Joi.string().guid()
@@ -64,8 +67,6 @@ pilotRouter.delete(
   }), 
   (req: Request, res: Response) => 
     pilotController.delete(req,res));
-
-
 
 
 export default pilotRouter

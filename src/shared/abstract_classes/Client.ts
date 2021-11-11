@@ -3,16 +3,16 @@ import { Column, PrimaryGeneratedColumn } from "typeorm";
 export default abstract class Client {
   @PrimaryGeneratedColumn("uuid")
   id: string;
-  @Column()
+  @Column({nullable: false})
   name: string;
-  @Column()
+  @Column({unique: true})
   registration: string;
   @Column()
   address: string;
   @Column("int2")
   age: number;
-  @Column()
+  @Column({nullable: false})
   password: string;
-  @Column()
+  @Column({unique: true, nullable: false})
   email: string;
 }

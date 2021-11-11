@@ -1,5 +1,5 @@
 export interface IClient {
-  id: string;
+  id?: string;
   name: string;
   registration: string;
   address: string;

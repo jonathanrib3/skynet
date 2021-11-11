@@ -12,7 +12,7 @@ export default class SessionController {
       password,
       type,
     });
-
+    
     return response.json({ token, user });
   }
 }

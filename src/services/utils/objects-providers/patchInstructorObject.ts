@@ -1,16 +1,20 @@
 import { Instructor } from "src/database/entity";
-import { IInstructor } from "src/shared";
+import { ErrorMessages, IInstructor } from "src/shared";
 import { getRepository } from "typeorm";
+import { ServerError } from "..";
+import { hashPassword } from "..";
 
-const aircraftRepository = getRepository(Instructor)
+const instructorRepository = getRepository(Instructor)
 
-async function createPatchAircraftObject(
-  id: string, 
-  dataToBeUpdated: IInstructor) {
+async function createPatchInstructorObject(id: string, dataToBeUpdated: IInstructor) {
 
-    const previousData: Instructor[] = await aircraftRepository
+    const previousData: Instructor[] = await instructorRepository
       .find({where: {id: id}})
     
+    if(previousData.length === 0) {
+      throw new ServerError(ErrorMessages.INSTRUCTOR_NOT_FOUND, 400)
+    }
+
     const patchedInstructor =
     {
       address: (!dataToBeUpdated.address) 
@@ -36,7 +40,7 @@ async function createPatchAircraftObject(
         : dataToBeUpdated.name,
       password: (!dataToBeUpdated.password) 
         ? previousData[0].password 
-        : dataToBeUpdated.password,
+        : await hashPassword(dataToBeUpdated.password),
       registration: (!dataToBeUpdated.registration) 
         ? previousData[0].registration 
         : dataToBeUpdated.registration
@@ -45,4 +49,4 @@ async function createPatchAircraftObject(
     return patchedInstructor
 }
 
-export default createPatchAircraftObject
+export default createPatchInstructorObject

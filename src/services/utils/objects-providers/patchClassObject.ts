@@ -1,17 +1,18 @@
 import { Class } from "src/database/entity";
-import { IClassInputDataModel } from "src/shared";
+import { ErrorMessages, IClassInputDataModel } from "src/shared";
 import { getRepository } from "typeorm";
+import { ServerError } from "..";
 
 const classRepository = getRepository(Class)
 
-async function createPatchClassObject(
-  id: string, 
-  dataToBeUpdated: IClassInputDataModel) {
+async function createPatchClassObject(id: string, dataToBeUpdated: IClassInputDataModel) {
     
-    const previousData: Class[] = await classRepository
-      .find({where: {id: id}})
-      .catch(error => console.log(error)) as Class[]
+    const previousData: Class[] = await classRepository.find({where: {id: id}})
     
+    if(previousData.length === 0) {
+      throw new ServerError(ErrorMessages.CLASS_NOT_FOUND, 400)
+    }
+
     const toBePatchedData = 
       {
         description: (!dataToBeUpdated.description) 
@@ -30,7 +31,7 @@ async function createPatchClassObject(
           ? previousData[0].startDate
           : dataToBeUpdated.startDate 
       }     
-  return toBePatchedData  
+    return toBePatchedData  
 }
 
 export default createPatchClassObject

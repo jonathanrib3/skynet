@@ -24,7 +24,7 @@ classRouter.get(
 
 classRouter.post(
   '/',
-  authentication, 
+  //authentication, 
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       description: Joi.string().trim().min(5).required(),
@@ -58,7 +58,8 @@ classRouter.patch(
   (req: Request, res: Response) => 
     classController.update(req,res));
 
-classRouter.delete('/:uuid', 
+classRouter.delete('/:uuid',
+  authentication,
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       uuid: Joi.string().guid()

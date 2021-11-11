@@ -23,7 +23,6 @@ studentRouter.get(
 
 studentRouter.post(
   "/",
-  authentication,
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       address: Joi.string().trim().min(5).required(),

@@ -1,8 +1,8 @@
-import { ErrorMessages, IStudent } from '../shared';
+import { ErrorMessages, IStudent, SuccessfulMessages } from '../shared';
 import { getRepository } from 'typeorm';
 import { Student } from '../database/entity'
-import ServerError from './utils/ServerError';
-import { createPatchStudentObject } from './utils';
+import ServerError from './utils/server-error/ServerError';
+import { createPatchStudentObject, createPostStudentObject } from './utils';
 
 
 export class StudentService {
@@ -11,9 +11,7 @@ export class StudentService {
 
   async findAllStudents() {
 
-    const students = await this.studentRepository
-      .find()
-      .catch(error => console.log(error))
+    const students = await this.studentRepository.find()
 
     if(!students) {
       throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
@@ -27,9 +25,7 @@ export class StudentService {
 
   async findStudentById(id: string) {
 
-    const student = await this.studentRepository
-      .find({where: {id: id}})
-      .catch(error => console.log(error))
+    const student = await this.studentRepository.find({where: {id: id}})
     
     if(!student) {
       throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
@@ -49,8 +45,7 @@ export class StudentService {
     }
 
     return await this.studentRepository
-      .save(newStudent)
-      .catch(error => console.log(error))
+      .save(await createPostStudentObject(newStudent))
   }
 
   async updateStudent(id: string, dataToBeUpdated: IStudent) {
@@ -65,7 +60,17 @@ export class StudentService {
 
   async deleteStudent(id: string) {
 
-    return await this.studentRepository.delete(id)
+    const deleteResult = await this.studentRepository.delete(id)
+
+    if(!deleteResult) {
+      throw new ServerError(ErrorMessages.UNKNOWN_DELETE_ERROR, 400)
+    }
+
+    if(deleteResult.affected === 0) {
+      throw new ServerError(ErrorMessages.ID_DELETE_ERROR, 400)
+    }
+
+    return SuccessfulMessages.STUDENT_DELETE_SUCCESSFUL
   }
 
 

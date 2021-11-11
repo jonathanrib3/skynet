@@ -1,10 +1,7 @@
 import { Aircraft } from '../database/entity';
-import { ErrorMessages, IAircraft } from '../shared';
-import { DeleteResult, getRepository } from 'typeorm';
+import { ErrorMessages, SuccessfulMessages, IAircraft } from '../shared';
+import { getRepository } from 'typeorm';
 import { ServerError, createPatchAircraftObject } from './utils';
-
-
-
 
 export class AircraftService {
  
@@ -12,9 +9,7 @@ export class AircraftService {
 
   async findAllAircrafts() {
 
-    const aircrafts = await this.aircraftRepository
-      .find()
-      .catch(error => console.log(error))
+    const aircrafts = await this.aircraftRepository.find()
 
     if(!aircrafts) {
       throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
@@ -29,9 +24,8 @@ export class AircraftService {
 
   async findAircraftById(id: string) {
 
-    const aircraft = await this.aircraftRepository
-      .find({where: {id:id}})
-      .catch(error => console.log(error))
+    const aircraft = await this.aircraftRepository.find({where: {id:id}})
+
 
     if(!aircraft) {
       throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
@@ -50,9 +44,7 @@ export class AircraftService {
       throw new ServerError(ErrorMessages.NULL_OBJECT_ERROR, 400)
     }
 
-    return await this.aircraftRepository
-      .save(newAircraft)
-      .catch(error => console.log(error))
+    return await this.aircraftRepository.save(newAircraft)
   }
 
   async updateAircraft(id: string, dataToBeUpdated: IAircraft) {
@@ -67,9 +59,7 @@ export class AircraftService {
 
   async deleteAircraft(id: string) {
 
-    const deleteResult = await this.aircraftRepository
-    .delete(id)
-      .catch(error => console.log(error)) as DeleteResult
+    const deleteResult = await this.aircraftRepository.delete(id)
 
     if(!deleteResult) {
       throw new ServerError(ErrorMessages.UNKNOWN_DELETE_ERROR, 400)
@@ -79,6 +69,6 @@ export class AircraftService {
       throw new ServerError(ErrorMessages.ID_DELETE_ERROR, 400)
     }
     
-    return deleteResult
+    return SuccessfulMessages.AIRCRAFT_DELETE_SUCCESSFUL
   }
 }

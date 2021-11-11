@@ -14,4 +14,7 @@ export const ErrorMessages = {
   UNKNOWN_DELETE_ERROR: `Something went wrong on trying to delete that entity`,
   ID_DELETE_ERROR: `There is no entity with such id`,
   RELATIONSHIP_ERROR: `There is no entities in this relationship with such ids`,
+  INVALID_USER_TYPE: `Invalid user type to login`,
+  INVALID_USER_EMAIL: `User email not found`,
+  INVALID_PASSWORD_ERROR: `Invalid password`,
 }

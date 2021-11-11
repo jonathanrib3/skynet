@@ -1,6 +1,6 @@
 declare global {
   interface UserToken {
-    id: number;
+    id: string;
     type: "student" | "pilot" | "instructor";
   }
 
