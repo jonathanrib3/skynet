@@ -16,7 +16,7 @@ Como rodar:
   `DB_TYPE` = postgres <br />
   `SERVER_ADDRESS` = preferencialmente localhost <br />
   `POSTGRES_ADDRESS` = preferencialmente localhost <br />
-  `POSTGRES_USER` = o usuário padrão caso rode com docker-compose é 'postgres' <br />
+  `POSTGRES_USER` = o usuário padrão caso rode localmente é 'postgres' <br />
   `POSTGRES_PASSWORD` = a senha padrão caso rode localmente é '1234' <br />
   `POSTGRES_DB` = skynet <br />
   `POSTGRES_PORT` = a porta padrão caso rode localmente é '5432' <br />
@@ -26,7 +26,7 @@ Como rodar:
   `POSTGRES_PASSWORD` = a senha padrão caso rode localmente é '1234' <br />
   `POSTGRES_DB` = skynet <br />
   `POSTGRES_PORT` = à escolha <br />
-  
+
   > esse arquivo serve como configuração pro container de banco de dados, referenciado no docker-compose.yml
   
 3. Caso queira rodar localmente, utilize o comando `docker-compose up --build`. Após isso caso o container 
