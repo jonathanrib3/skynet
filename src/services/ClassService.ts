@@ -1,9 +1,7 @@
 import { Student, Instructor, Aircraft, Class} from '../database/entity';
 import { getRepository } from 'typeorm';
 import { ErrorMessages, SuccessfulMessages, IClassInputDataModel} from '../shared';
-import { 
-  ServerError, 
-  createPostClassObject, createPatchClassObject } from './utils';
+import { ServerError, createPostClassObject, createPatchClassObject } from './utils';
 
 export class ClassService {
 
@@ -34,6 +32,12 @@ export class ClassService {
       .find({where: {id: id}, relations: ['aircrafts','instructors','students']})
   }
 
+  /*
+    Método que cria uma classe com aluno(s), instrutor(es) e aeronave(s). 
+    Como ela tem relações many-to-many com instructor, student
+    e aircraft, ele primeiro busca os dados pertinentes às 
+    entidades pra realizar o relacionamento entre elas.
+  */
   async createClass(newClassData: IClassInputDataModel) {
     const students = await this.studentRepository
       .findByIds(newClassData.studentsIds)

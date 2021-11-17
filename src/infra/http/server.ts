@@ -2,7 +2,6 @@ import "reflect-metadata";
 import "dotenv/config";
 import express from "express";
 import "express-async-errors";
-import { AircraftController } from '@controllers/';
 import cors from "cors";
 import { handle } from "../utils/error";
 import { logger } from "../utils/logger";
@@ -19,8 +18,6 @@ import {
 import { errorHandler } from "../utils/serverErrorHandler";
 import { errors } from "celebrate";
 
-
-const ac = new AircraftController()
 
 const app = express();
 
@@ -42,17 +39,16 @@ async function initServer() {
 
   const server = app.listen(PORT, () => {
     logger.info(
-      `Server running in address http://${ADDRESS}:${PORT} on ${process.env.NODE_ENV}environment`
+      `Server running in address http://${ADDRESS}:${PORT} on ${process.env.NODE_ENV} environment`
     );
   });
 
-  process.on("unhandledRejection", (err) => {
-    throw err;
-  });
-  process.on("uncaughtException", (err) => {
-    handle(err);
-  });
-
+  /*
+    HTTP Terminator é uma lib quer permite encerrar o server de forma mais suave,
+    sem interromper alguma operação que esteja ocorrendo no momento do encerraamento.
+    Ao receber algum desses sinais de shutdown, o serviço de log mostra a mensagem
+    e encerra o server
+  */
   const httpTerminator = createHttpTerminator({ server });
 
   enum shutdownSignals {

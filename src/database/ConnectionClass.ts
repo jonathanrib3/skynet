@@ -19,7 +19,7 @@ export default class ConnectionClass {
     console.log(connectionPoolConfig)
     await this.connectionManager.create(connectionPoolConfig)
     await this.connectionManager.get('default').connect().then(() => {
-      console.log(SuccessfulMessages.DATABASE_CONNECTION_SUCCESSFUL)
+      console.log(SuccessfulMessages.DATABASE_CONNECTION_SUCCESSFUL.message)
     }).catch(error => console.log(error))
     
   }
