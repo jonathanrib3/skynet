@@ -4,7 +4,7 @@ export const SuccessfulMessages = {
   STUDENT_DELETE_SUCCESSFUL: {message: `Student has been successfuly deleted`},
   PILOT_DELETE_SUCCESSFUL: {message: `Pilot successfuly deleted`},
   INSTRUCTOR_DELETE_SUCCESSFUL: {message: `Instructor successfuly deleted`},
-  AIRCRAFT_DELETE_SUCCESSFUL: {message: `Student successfuly deleted`},
-  CLASS_DELETE_SUCCESSFUL: {message: `Student successfuly deleted`},
+  AIRCRAFT_DELETE_SUCCESSFUL: {message: `Aircraft successfuly deleted`},
+  CLASS_DELETE_SUCCESSFUL: {message: `Class successfuly deleted`},
   
 }
