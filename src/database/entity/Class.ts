@@ -1,4 +1,4 @@
-import { Aircraft, Instructor, Student} from './'
+import { Aircraft, Associate } from './'
 import { 
   Column, 
   Entity, 
@@ -8,23 +8,17 @@ import {
 
 
 @Entity()
-export class Class {
+export default class Class {
 
   @PrimaryGeneratedColumn('uuid')
   id: string
   
   @ManyToMany(
-    type => Instructor, 
+    type => Associate, 
     {nullable: false, cascade: true, onDelete: 'CASCADE', onUpdate: 'CASCADE'})
   @JoinTable()
-  instructors: Instructor[]
-
-  @ManyToMany(
-    type => Student,
-    {nullable: false, cascade: true, onDelete: 'CASCADE', onUpdate: 'CASCADE'})
-  @JoinTable()
-  students: Student[]
-
+  associates: Associate[]
+    
   @ManyToMany(
     type => Aircraft, 
     {nullable: false, cascade: true, onDelete: 'CASCADE', onUpdate: 'CASCADE'})
@@ -36,9 +30,6 @@ export class Class {
 
   @Column('float')
   flewHours: number
-
-  @Column()
-  isSolo: boolean
 
   @Column('date')
   endDate: string

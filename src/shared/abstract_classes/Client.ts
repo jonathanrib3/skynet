@@ -5,8 +5,6 @@ export default abstract class Client {
   id: string;
   @Column({nullable: false})
   name: string;
-  @Column({unique: true})
-  registration: string;
   @Column()
   address: string;
   @Column("int2")

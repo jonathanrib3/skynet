@@ -2,12 +2,12 @@ import { PrimaryGeneratedColumn } from 'typeorm';
 import { Column, Entity } from 'typeorm';
 
 @Entity()
-export class Aircraft {
+export default class Aircraft {
   @PrimaryGeneratedColumn('uuid')
   id: string
-  @Column()
+  @Column({nullable: false})
   model: string
-  @Column()
+  @Column({unique: true, nullable: false})
   callSign: string
   @Column('float')
   flewHours: number

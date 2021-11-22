@@ -4,6 +4,7 @@ export const ErrorMessages = {
   PILOT_NOT_FOUND: `Pilot couldn't be found`,
   CLASS_NOT_FOUND: `Class couldn't be found`,
   AIRCRAFT_NOT_FOUND: `Aircraft couldn't be found`,
+  FLIGHT_NOT_FOUND: `Flight couldn't be found`,
   NULL_OBJECT_ERROR: `Object cannot be nullable`,
   SERVER_INTERNAL_ERROR: `Something went wrong on the server`, 
   EMPTY_AIRCRAFT_TABLE: `Aircraft table is actually empty`,
@@ -17,4 +18,5 @@ export const ErrorMessages = {
   INVALID_USER_TYPE: `Invalid user type to login`,
   INVALID_USER_EMAIL: `User email not found`,
   INVALID_PASSWORD_ERROR: `Invalid password`,
+  
 }

@@ -1,9 +1,6 @@
-import { Student, Instructor, Aircraft, Pilot } from "../../database/entity";
-
-export interface IClassInputDataModel {
+export default interface IClass {
   id: string;
-  instructorsIds: string[];
-  studentsIds: string[];
+  associatesIds: string[];
   aircraftsIds: string[];
   description: string;
   flewHours: number;
@@ -12,14 +9,3 @@ export interface IClassInputDataModel {
   startDate: string;
 }
 
-export interface IClassOutputDataModel {
-  id: string;
-  instructors: Instructor[];
-  students: Student[];
-  aircrafts: Aircraft[];
-  description: string;
-  flewHours: number;
-  isSolo: boolean;
-  endDate: string;
-  startDate: string;
-}

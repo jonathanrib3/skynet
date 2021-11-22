@@ -1,6 +1,6 @@
 import { ErrorMessages } from '../../shared/constants/messages/ErrorMessages';
 import type { ErrorRequestHandler } from 'express'
-import ServerError from '../../services/utils/server-error/ServerError'
+import ServerError from '../../server-error/ServerError'
 import { CelebrateError} from 'celebrate'
 import { QueryFailedError } from 'typeorm';
 

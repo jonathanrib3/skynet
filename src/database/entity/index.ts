@@ -1,5 +1,5 @@
-export * from './Aircraft'
-export * from './Class'
-export * from './Instructor'
-export * from './Pilot'
-export * from './Student'
+export { default as Aircraft} from './Aircraft'
+export { default as Associate } from './Associate'
+export { default as Class } from './Class'
+export { default as Flight } from './Flight'
+

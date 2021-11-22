@@ -1,7 +1,7 @@
 declare global {
   interface UserToken {
     id: string;
-    type: "student" | "pilot" | "instructor";
+    role: "student" | "pilot" | "instructor";
   }
 
   namespace NodeJS {

@@ -7,14 +7,14 @@ import { handle } from "../utils/error";
 import { logger } from "../utils/logger";
 import pinoHttp from "pino-http";
 import { createHttpTerminator } from "http-terminator";
-import {
+/*import {
   aircraftRouter,
   classRouter,
   instructorRouter,
   pilotRouter,
   studentRouter,
   sessionsRouter,
-} from "./routes";
+} from "./routes";*/
 import { errorHandler } from "../utils/serverErrorHandler";
 import { errors } from "celebrate";
 
@@ -28,12 +28,14 @@ async function initServer() {
   app.use(cors());
   app.use(express.json());
   app.use(pinoHttp({ logger }));
+  /*
   app.use("/aircraft", aircraftRouter);
   app.use("/class", classRouter);
   app.use("/pilot", pilotRouter);
   app.use("/student", studentRouter);
   app.use("/instructor", instructorRouter);
   app.use("/login", sessionsRouter);
+  */
   app.use(errors())
   app.use(errorHandler);
 

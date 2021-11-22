@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import JwtProvider from "../../../infra/utils/JwtProvider";
-import { ServerError } from "../../../services/utils";
+import { ServerError } from "../../../repositories/utils";
 
 export default (request: Request, response: Response, next: NextFunction) => {
   const jwtProvider = new JwtProvider();
