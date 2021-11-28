@@ -1,6 +1,0 @@
-Todas essas funções provêem um objeto pra ser criado ou atualizado via POST ou PATCH nos services.
-
-Na parte de patch essa separação foi necessária por causa da funcionalidade de atualização parcial dos dados.
-
-Na parte de post essa separação foi necessária por causa da criptografia da senha.
-

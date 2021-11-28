@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+
+}
+
+model User {
+  id              Int       @id @default(autoincrement())
+  email           String    @unique
+  name            String
+  password        String
+  type            USERTYPE
+  license         String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @default(now()) @updatedAt
+  instructorClass Class[]   @relation("Instructor")
+  flightAsPilot   Flight[]  @relation("Pilot")
+  flightAsCoPilot Flight[]  @relation("CoPilot")
+  student         Student[]
+}
+
+model Student {
+  id           Int           @id @default(autoincrement())
+  userId       Int
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @default(now()) @updatedAt
+  user         User          @relation(fields: [userId], references: [id])
+  studentClass Class[]       @relation("Student")
+  certificates Certificate[]
+}
+
+model Aircraft {
+  id        Int      @id @default(autoincrement())
+  model     String
+  callSign  String
+  flewHours Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  flights   Flight[]
+}
+
+model Course {
+  id           Int           @id @default(autoincrement())
+  name         String
+  minHours     Float
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @default(now()) @updatedAt
+  class        Class[]
+  certificates Certificate[]
+}
+
+model Class {
+  id           Int      @id @default(autoincrement())
+  instructorId Int
+  instructor   User     @relation(fields: [instructorId], references: [id], name: "Instructor")
+  studentId    Int
+  student      Student  @relation(fields: [studentId], references: [id], name: "Student")
+  flightId     Int
+  flight       Flight   @relation(fields: [flightId], references: [id])
+  courseId     Int
+  course       Course   @relation(fields: [courseId], references: [id])
+  description  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+}
+
+model Flight {
+  id         Int      @id @default(autoincrement())
+  aircraftId Int
+  aircraft   Aircraft @relation(fields: [aircraftId], references: [id])
+  pilotId    Int
+  pilot      User     @relation(fields: [pilotId], references: [id], name: "Pilot")
+  coPilotId  Int?
+  coPilot    User?    @relation(fields: [coPilotId], references: [id], name: "CoPilot")
+  hoursFlew  Float
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+  class      Class[]
+}
+
+model Certificate {
+  id        Int      @id @default(autoincrement())
+  courseId  Int
+  course    Course   @relation(fields: [courseId], references: [id])
+  studentId Int
+  student   Student  @relation(fields: [studentId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+enum USERTYPE {
+  student
+  pilot
+  instructor
+}

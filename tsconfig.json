@@ -7,7 +7,9 @@
     "removeComments": true,
     "strictPropertyInitialization": false,
     "allowJs": true,
-    "baseUrl": ".",
+
+    "moduleResolution": "node",
+    "baseUrl": "./src/",
 
     "typeRoots": [
       "./node_modules/@types",
@@ -15,12 +17,10 @@
     ],
 
     "paths": {
-      "@controllers/": ["./src/controllers/"],
-      "@shared/": ["./src/shared/"],
-      "@constants/": ["./src/shared/constants"],
-      "@services/": ["./src/services/"],
-      "@database/": ["./src/database/"],
-      "@types/": ["./src/@types/"]
+      "@modules/*": ["modules/*"],
+      "@constants/*": ["constants/*"],
+      "@shared/*": ["shared/*"],
+      "@config/*": ["config/*"],
     },
 
     "esModuleInterop": true,
