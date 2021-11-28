@@ -2,13 +2,41 @@ version: '3'
 services: 
   database:
     image: 'postgres:latest'
+    container_name: skynet-database
     env_file:
       - database.env
     volumes:
       - db-data:/var/lib/postgresql/data
     ports: 
       - "9000:5432"
+  # skynet-backend:
+  #   build:
+  #     context: .
+  #   container_name: skynet-backend
+  #   env_file: .env
+  #   environment:
+  #     - PORT=$PORT
+  #     - JWT_SECRET=$JWT_SECRET
+  #     - DB_TYPE=postgres
+  #     - SERVER_ADDRESS=$SERVER_ADDRESS
+  #     - POSTGRES_ADDRESS=skynet-database
+  #     - POSTGRES_USER=$POSTGRES_USER
+  #     - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+  #     - POSTGRES_DB=skynet
+  #     - POSTGRES_PORT=$POSTGRES_PORT
+  #     - NODE_ENV=$NODE_ENV
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - database
+  #   networks:
+  #     - app-network
+  #   volumes:
+  #     - .:/home/node/skynet-backend
+  #     - skynet_node_modules:/home/node/skynet-backend/node_modules
+  #   command: npm run start  
+
 
 volumes: 
   db-data:
-
+  #skynet_node_modules:

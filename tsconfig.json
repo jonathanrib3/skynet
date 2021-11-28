@@ -7,7 +7,9 @@
     "removeComments": true,
     "strictPropertyInitialization": false,
     "allowJs": true,
-    "baseUrl": "./src",
+
+    "moduleResolution": "node",
+    "baseUrl": "./src/",
 
     "typeRoots": [
       "./node_modules/@types",
