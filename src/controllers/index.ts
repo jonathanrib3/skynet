@@ -1,5 +1,0 @@
-export * from './AircraftController'
-export * from './PilotController'
-export * from './InstructorController'
-export * from './ClassController'
-export * from './StudentController'

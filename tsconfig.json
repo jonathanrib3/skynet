@@ -15,13 +15,10 @@
     ],
 
     "paths": {
-      "@modules/": ["modules/"],
-      "@config/": ["config/"],
-      "@shared/": ["shared/"],
-      "@constants/": ["constants/"],
-      "@database/": ["database/"],
-      "@models/": ["models/"],
-      "@types/": ["@types/"]
+      "@modules/*": ["modules/*"],
+      "@constants/*": ["constants/*"],
+      "@shared/*": ["shared/*"],
+      "@config/*": ["config/*"],
     },
 
     "esModuleInterop": true,
